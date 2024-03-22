@@ -1,0 +1,98 @@
+
+
+.App {
+  text-align: left;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 60px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-header {
+  background-color: #282c34;
+  height: 110px;
+  padding: 10px;
+  color: white;
+  text-align: center;
+
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.btn-success {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+
+
+
+
+
+
+.item-image {
+  width: 80px; /* Adjust the width as needed */
+  float: left;
+  margin-right: 20px;
+}
+
+
+
+
+
+
+/* Add your custom styles here */
+.item-container {
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.item-image {
+  width: 80px; /* Adjust the width as needed */
+  float: left;
+  margin-right: 20px;
+}
+
+.article-title {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.trash-icon,
+.download-icon,
+.rotate-icon,
+.star-icon {
+  color: #ffc107; /* Adjust the color as needed */
+}
+
+.star-icon.fa-regular {
+  color: #ccc; /* Adjust the color for non-favorited stars */
+}
