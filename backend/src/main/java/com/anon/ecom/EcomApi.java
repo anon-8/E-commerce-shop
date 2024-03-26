@@ -1,9 +1,9 @@
 package com.anon.ecom;
 
-import com.anon.ecom.domain.dto.AuthDto;
-import com.anon.ecom.domain.dto.RegisterDto;
-import com.anon.ecom.domain.enums.Role;
-import com.anon.ecom.services.AuthService;
+import com.anon.ecom.auth.domain.AuthDto;
+import com.anon.ecom.user.domain.dto.RegisterDto;
+import com.anon.ecom.user.domain.entity.Role;
+import com.anon.ecom.auth.services.AuthService;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

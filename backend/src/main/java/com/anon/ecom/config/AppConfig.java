@@ -1,6 +1,6 @@
 package com.anon.ecom.config;
 
-import com.anon.ecom.repositories.UserRepository;
+import com.anon.ecom.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

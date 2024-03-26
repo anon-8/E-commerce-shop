@@ -21,8 +21,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static com.anon.ecom.domain.enums.Permission.*;
-import static com.anon.ecom.domain.enums.Role.*;
+import static com.anon.ecom.user.domain.entity.Permission.*;
+import static com.anon.ecom.user.domain.entity.Role.*;
 import static jakarta.ws.rs.HttpMethod.*;
 
 

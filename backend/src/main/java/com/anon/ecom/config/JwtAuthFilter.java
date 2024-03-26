@@ -1,6 +1,6 @@
 package com.anon.ecom.config;
 
-import com.anon.ecom.services.impl.JwtServiceImpl;
+import com.anon.ecom.auth.services.JwtServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

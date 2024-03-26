@@ -1,5 +1,4 @@
 
-
 .App {
   text-align: left;
 }
@@ -22,18 +21,28 @@
   font-size: 1.5em;
 }
 
-.App-header {
-  background-color: #282c34;
-  height: 110px;
-  padding: 10px;
-  color: white;
-  text-align: center;
+/*navbar*/
 
+.navbar {
+  background-color: #666666;
+}
+
+.navbar-brand {
+  margin-right: 20px;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-nav .nav-item {
+  margin-right: 10px;
 }
 
 .App-link {
   color: #61dafb;
 }
+
 
 @keyframes App-logo-spin {
   from {
@@ -50,49 +59,132 @@
   margin-top: 10px;
 }
 
-
-
-
-
-
-
-.item-image {
-  width: 80px; /* Adjust the width as needed */
-  float: left;
-  margin-right: 20px;
+.btn-primary {
+  margin-bottom: 10px;
 }
 
+.nav-pills {
+  padding: 40px;
+}
 
+/**/
 
-
-
-
-/* Add your custom styles here */
 .item-container {
-  border: 1px solid #dee2e6;
-  border-radius: 10px;
+  display: flex;
   margin-bottom: 20px;
-  padding: 20px;
+}
+
+
+.even {
+  background-color: #f2f2f2;
+}
+
+.odd {
+  background-color: #ffffff;
+}
+
+.item-list {
+  list-style: none;
+  padding: 0;
+}
+
+.item-container {
+  display: flex;
+  margin-bottom: 20px;
 }
 
 .item-image {
-  width: 80px; /* Adjust the width as needed */
-  float: left;
+  width: 180px;
+  height: auto;
   margin-right: 20px;
+  border-radius: 5px;
 }
 
-.article-title {
-  text-decoration: none;
-  color: #007bff;
+.item-content {
+  display: flex;
+  width: 100%;
+  border-radius: 5px;
 }
 
-.trash-icon,
-.download-icon,
-.rotate-icon,
-.star-icon {
-  color: #ffc107; /* Adjust the color as needed */
+.item-details {
+  flex-grow: 1;
 }
 
-.star-icon.fa-regular {
-  color: #ccc; /* Adjust the color for non-favorited stars */
+.description {
+  max-width: 50%;
+}
+
+.sell-offers {
+  margin-top: 10px;
+  max-width: 50%;
+}
+
+.sell-offers-list {
+  list-style: none;
+  padding: 0;
+}
+
+.sell-offer {
+  margin-bottom: 10px;
+}
+
+.seller-info {
+  margin-bottom: 5px;
+}
+
+.quantity-control {
+  margin-bottom: 5px;
+}
+
+/* Additional styling as needed */
+
+
+
+
+
+/*Cart*/
+
+.container {
+  margin: 20px;
+}
+
+.cart-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.loading-message, .error-message {
+  font-size: 16px;
+  color: #FF0000;
+}
+
+.cart-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.cart-item {
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.item-title {
+  font-weight: bold;
+}
+
+.seller-info {
+  color: #666666;
+}
+
+.item-price, .item-quantity {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.btn-cart {
+
+  margin: 10px;
+
 }

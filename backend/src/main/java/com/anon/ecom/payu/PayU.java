@@ -1,7 +1,7 @@
 package com.anon.ecom.payu;
 
 
-import com.anon.ecom.domain.dto.OrderDto;
+import com.anon.ecom.order.domain.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
