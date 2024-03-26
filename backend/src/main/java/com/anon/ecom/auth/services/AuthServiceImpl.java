@@ -1,10 +1,8 @@
 package com.anon.ecom.auth.services;
 
-import com.anon.ecom.auth.domain.AuthDto;
+import com.anon.ecom.auth.domain.AuthRequest;
 import com.anon.ecom.auth.domain.AuthResponse;
-import com.anon.ecom.auth.services.AuthService;
-import com.anon.ecom.auth.services.JwtServiceImpl;
-import com.anon.ecom.user.domain.dto.RegisterDto;
+import com.anon.ecom.auth.domain.RegisterRequest;
 import com.anon.ecom.user.domain.entity.Role;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.user.UserRepository;
@@ -32,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
         this.authenticationManager = authenticationManager;
     }
     @Override
-    public AuthResponse register(RegisterDto request) {
+    public AuthResponse register(RegisterRequest request) {
 
         Role role = request.getRole() != null ? request.getRole() : USER;
 
@@ -52,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
     @Override
-    public AuthResponse authenticate(AuthDto request) {
+    public AuthResponse authenticate(AuthRequest request) {
 
         String username = request.getUsername();
         var user = userRepository.findByUsernameOrEmail(username, username)
@@ -74,6 +72,7 @@ public class AuthServiceImpl implements AuthService {
     public boolean existsByUsername(String username) {
 
         Optional<UserEntity> existingUser = userRepository.findByUsername(username);
+
         return existingUser.isEmpty();
     }
 

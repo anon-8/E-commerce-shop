@@ -1,4 +1,4 @@
-package com.anon.ecom.payu;
+package com.anon.ecom.order.payu.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

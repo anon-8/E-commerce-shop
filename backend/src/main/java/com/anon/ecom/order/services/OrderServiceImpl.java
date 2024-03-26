@@ -25,9 +25,7 @@ public class OrderServiceImpl implements OrderService {
     private final CartItemRepository cartItemRepository;
     private final ItemCopyRepository itemCopyRepository;
     private final UserService userService;
-
     private final Mapper<OrderEntity, OrderDto> orderMapper;
-
     public OrderServiceImpl(OrderRepository orderRepository, CartItemRepository cartItemRepository, ItemCopyRepository itemCopyRepository, UserService userService, Mapper<OrderEntity, OrderDto> orderMapper) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;

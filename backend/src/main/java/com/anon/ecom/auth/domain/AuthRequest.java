@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthDto {
+public class AuthRequest {
 
     private String username;
-    String password;
+    private String password;
 
 }

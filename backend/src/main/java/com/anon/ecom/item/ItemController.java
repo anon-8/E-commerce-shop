@@ -33,8 +33,8 @@ public class ItemController {
         this.itemCopyRepository = itemCopyRepository;
     }
     @PostMapping(path = "/auth/management/items")
-    public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto item) {
-        ItemEntity itemEntity = itemMapper.mapFrom(item);
+    public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto itemDto) {
+        ItemEntity itemEntity = itemMapper.mapFrom(itemDto);
         ItemEntity savedItemEntity = itemService.save(itemEntity);
         return new ResponseEntity<>(itemMapper.mapTo(savedItemEntity), HttpStatus.CREATED);
     }
@@ -117,9 +117,6 @@ public class ItemController {
                 .filter(o -> o.getSeller().getId().equals(offer.getSeller().getId()) && o.getPrice().equals(offer.getPrice()))
                 .count();
     }
-
-
-
 
     @DeleteMapping(path = "/auth/admin/item/{id}")
     public ResponseEntity deleteItem(@PathVariable("id") Long id) {

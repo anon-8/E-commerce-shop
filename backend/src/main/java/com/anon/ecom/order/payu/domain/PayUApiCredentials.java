@@ -1,7 +1,5 @@
-package com.anon.ecom.payu;
-import lombok.Builder;
+package com.anon.ecom.order.payu.domain;
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
 
 @Data
 public class PayUApiCredentials {

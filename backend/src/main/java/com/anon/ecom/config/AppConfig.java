@@ -23,7 +23,6 @@ public class AppConfig {
         return username -> repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
 
@@ -41,6 +40,4 @@ public class AppConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.anon.ecom.payu;
+package com.anon.ecom.order.payu.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

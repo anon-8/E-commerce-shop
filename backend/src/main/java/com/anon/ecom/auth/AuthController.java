@@ -1,8 +1,8 @@
 package com.anon.ecom.auth;
-import com.anon.ecom.auth.domain.AuthDto;
+import com.anon.ecom.auth.domain.AuthRequest;
 import com.anon.ecom.auth.domain.AuthResponse;
 import com.anon.ecom.auth.services.AuthService;
-import com.anon.ecom.user.domain.dto.RegisterDto;
+import com.anon.ecom.auth.domain.RegisterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +19,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterDto request)   {
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request)   {
         return ResponseEntity.ok(authService.register(request));
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> register(@RequestBody AuthDto request)   {
+    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest request)   {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 

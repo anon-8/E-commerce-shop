@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).map(existingUser -> {
             Optional.ofNullable(userEntity.getFirstname()).ifPresent(existingUser::setFirstname);
             return userRepository.save(existingUser);
-        }).orElseThrow(() -> new RuntimeException("User does not exist"));
+        }).orElseThrow(() -> new UserNotFoundException(userEntity.getUsername()));
     }
     @Override
     public void delete(Long id) {

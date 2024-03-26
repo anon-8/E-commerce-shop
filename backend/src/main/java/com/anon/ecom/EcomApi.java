@@ -1,7 +1,7 @@
 package com.anon.ecom;
 
-import com.anon.ecom.auth.domain.AuthDto;
-import com.anon.ecom.user.domain.dto.RegisterDto;
+import com.anon.ecom.auth.domain.AuthRequest;
+import com.anon.ecom.auth.domain.RegisterRequest;
 import com.anon.ecom.user.domain.entity.Role;
 import com.anon.ecom.auth.services.AuthService;
 import lombok.extern.java.Log;
@@ -23,7 +23,7 @@ public class EcomApi {
     ) {
         return args -> {
             if (service.existsByUsername("admin")) {
-                RegisterDto adminRequest = RegisterDto.builder()
+                RegisterRequest adminRequest = RegisterRequest.builder()
                         .username("admin")
                         .firstname("Admin")
                         .lastname("Admin")
@@ -33,7 +33,7 @@ public class EcomApi {
                         .build();
                 System.out.println("Admin token: " + service.register(adminRequest).getToken());
             } else {
-                AuthDto adminReq = AuthDto.builder()
+                AuthRequest adminReq = AuthRequest.builder()
                         .username("admin")
                         .password("password")
                         .build();
@@ -41,7 +41,7 @@ public class EcomApi {
             }
 
             if (service.existsByUsername("manager")) {
-                RegisterDto managerRequest = RegisterDto.builder()
+                RegisterRequest managerRequest = RegisterRequest.builder()
                         .username("manager")
                         .firstname("Manager")
                         .lastname("Manager")
@@ -51,7 +51,7 @@ public class EcomApi {
                         .build();
                 System.out.println("Manager token: " + service.register(managerRequest).getToken());
             } else {
-                AuthDto managerReq = AuthDto.builder()
+                AuthRequest managerReq = AuthRequest.builder()
                         .username("manager")
                         .password("password")
                         .build();

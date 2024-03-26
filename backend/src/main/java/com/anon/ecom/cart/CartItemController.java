@@ -43,6 +43,7 @@ public class CartItemController {
                 .map(cartItemMapper::mapTo)
                 .collect(Collectors.toList());
     }
+
     @GetMapping(path = "/in-cart/{id}")
     public ResponseEntity<CartItemDto> getCartItem(@PathVariable("id") Long id) {
         Optional<CartItemEntity> foundItem = cartItemService.findOne(id);

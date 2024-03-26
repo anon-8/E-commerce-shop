@@ -1,5 +1,6 @@
-package com.anon.ecom.payu;
+package com.anon.ecom.order.payu;
 
+import com.anon.ecom.order.payu.domain.PayUApiCredentials;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

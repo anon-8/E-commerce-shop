@@ -52,9 +52,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
     @Override
     public Optional<CartItemEntity> findOne(Long id) {
-
         return cartItemRepository.findById(id);
-
     }
     @Override
     public CartItemEntity saveOrPartialUpdate(CartItemEntity cartItemEntity) {
@@ -76,13 +74,11 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public CartItemDto cartManipulation(CartItemDto cartItemDto) {
 
-        System.out.println(cartItemDto);
-
         ItemEntity item = itemRepository.findById(cartItemDto.getItem().getId())
                 .orElseThrow(() -> new ItemNotFoundException(cartItemDto.getItem().getId()));
 
         UserEntity seller = userRepository.findById(cartItemDto.getSeller().getId())
-                .orElseThrow(() -> new UserNotFoundException(""));
+                .orElseThrow(() -> new UserNotFoundException(cartItemDto.getSeller().getUsername()));
 
         int itemCodesInStock = itemCopyRepository.findAllSellOffersByItemIdAndSellerIdAndPrice(seller.getId(), item.getId(), cartItemDto.getPrice()).size();
         if (itemCodesInStock < 1) {

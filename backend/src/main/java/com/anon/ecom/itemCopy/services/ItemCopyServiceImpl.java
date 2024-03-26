@@ -1,6 +1,7 @@
 package com.anon.ecom.itemCopy.services;
 
 import com.anon.ecom.item.domain.ItemEntity;
+import com.anon.ecom.item.exeptions.ItemNotFoundException;
 import com.anon.ecom.itemCopy.ItemCopyRepository;
 import com.anon.ecom.itemCopy.domain.ItemCopyDto;
 import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
@@ -8,6 +9,7 @@ import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
 import com.anon.ecom.item.ItemRepository;
 import com.anon.ecom.user.UserRepository;
+import com.anon.ecom.user.exeptions.UserNotFoundException;
 import com.anon.ecom.user.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,10 +79,10 @@ public class ItemCopyServiceImpl implements ItemCopyService {
 
         String username = user.getUsername();
         UserEntity seller = userRepository.findByUsernameOrEmail(username, username)
-                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+                .orElseThrow(() -> new UserNotFoundException(username));
 
         ItemEntity itemEntity = itemRepository.findById(itemCopyDto.getItem().getId())
-                .orElseThrow(() -> new RuntimeException("Item not found with id: " + itemCopyDto.getItem().getId()));
+                .orElseThrow(() -> new ItemNotFoundException(itemCopyDto.getItem().getId()));
 
         ItemCopyEntity itemCopyEntity = itemCopyMapper.mapFrom(itemCopyDto);
 

@@ -13,7 +13,6 @@ public interface ItemService {
     ItemEntity createUpdateItem(Long id, ItemEntity item);
     List<ItemEntity> findAll();
     Page<ItemEntity> findAll(Pageable pageable);
-
     Optional<ItemEntity> findOne(Long id);
     boolean isExists(Long id);
     ItemEntity partialUpdate(Long id, ItemEntity itemEntity);

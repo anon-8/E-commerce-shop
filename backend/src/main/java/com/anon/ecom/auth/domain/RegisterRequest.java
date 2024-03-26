@@ -1,4 +1,4 @@
-package com.anon.ecom.user.domain.dto;
+package com.anon.ecom.auth.domain;
 
 import com.anon.ecom.user.domain.entity.Role;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegisterDto {
+public class RegisterRequest {
     private String firstname;
     private String lastname;
     private String email;
