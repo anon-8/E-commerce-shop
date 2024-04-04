@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { setAuthHeader } from '../axios_helper';
-
 class ItemsContent extends Component {
     constructor(props) {
         super(props);
@@ -10,7 +9,9 @@ class ItemsContent extends Component {
             error: null,
             loading: true,
             showSellOffers: {},
-            quantities: {}
+            quantities: {},
+            currentPage: 0,
+            pageSize: 10
         };
     }
 
@@ -19,7 +20,8 @@ class ItemsContent extends Component {
     }
 
     fetchData() {
-        axios.get('/items')
+        const { currentPage, pageSize } = this.state;
+        axios.get(`/items?page=${currentPage}&size=${pageSize}`)
             .then(response => {
                 this.setState({ data: response.data, loading: false });
             })
@@ -93,7 +95,7 @@ class ItemsContent extends Component {
                                 <li key={item.id} className={`item-container ${index % 2 === 0 ? 'even' : 'odd'}`}>
                                     <div className="item-content">
                                         <div className="item-image-container">
-                                            <img src={item.imageUrl} alt={item.title} className="item-image" />
+                                            <img src={item.imageUrl} alt={item.title} className="item-image"/>
                                         </div>
                                         <div className="item-details">
                                             <div className="description">
@@ -118,11 +120,24 @@ class ItemsContent extends Component {
                                                             return (
                                                                 <li key={offer.id} className="sell-offer">
                                                                     <div className="seller-info">
-                                                                        Seller: {offer.seller.username}, Price: PLN{offer.price}
-                                                                        <button className="btn btn-decrement" onClick={decrementQuantity}>-</button>
-                                                                        <input type="text" value={quantity} readOnly style={{ width: '30px', margin: '0 5px' }} />
-                                                                        <button className="btn btn-increment" onClick={incrementQuantity}>+</button>
-                                                                        <button className="btn btn-success" style={{ margin: '0 6px' }} onClick={() => this.addToCart(offer.item, offer.seller, offer.price, quantity)}>Add to Cart</button>
+                                                                        Seller: {offer.seller.username}, Price:
+                                                                        PLN{offer.price}
+                                                                        <button className="btn btn-decrement"
+                                                                                onClick={decrementQuantity}>-
+                                                                        </button>
+                                                                        <input type="text" value={quantity} readOnly
+                                                                               style={{
+                                                                                   width: '30px',
+                                                                                   margin: '0 5px'
+                                                                               }}/>
+                                                                        <button className="btn btn-increment"
+                                                                                onClick={incrementQuantity}>+
+                                                                        </button>
+                                                                        <button className="btn btn-success"
+                                                                                style={{margin: '0 6px'}}
+                                                                                onClick={() => this.addToCart(offer.item, offer.seller, offer.price, quantity)}>Add
+                                                                            to Cart
+                                                                        </button>
                                                                     </div>
                                                                 </li>
                                                             );
@@ -130,12 +145,23 @@ class ItemsContent extends Component {
                                                     </ul>
                                                 </div>
                                             )}
+
                                         </div>
                                     </div>
                                 </li>
                             ))}
+
                         </ul>
+
                     )}
+                </div>
+                <div className="row justify-content-center">
+                    <button
+                        onClick={() => this.setState(prevState => ({currentPage: Math.max(prevState.currentPage - 1, 0)}))}>Previous
+                    </button>
+                    <button
+                        onClick={() => this.setState(prevState => ({currentPage: prevState.currentPage + 1}))}>Next
+                    </button>
                 </div>
             </div>
         );

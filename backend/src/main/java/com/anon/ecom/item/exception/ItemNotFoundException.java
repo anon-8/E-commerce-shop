@@ -1,4 +1,4 @@
-package com.anon.ecom.item.exeptions;
+package com.anon.ecom.item.exception;
 
 public class ItemNotFoundException extends RuntimeException {
     public ItemNotFoundException(Long itemId) {

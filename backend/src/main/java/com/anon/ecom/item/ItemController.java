@@ -3,12 +3,15 @@ package com.anon.ecom.item;
 import com.anon.ecom.item.domain.ItemDto;
 import com.anon.ecom.item.domain.ItemEntity;
 import com.anon.ecom.itemCopy.domain.SellOffersDto;
-import com.anon.ecom.item.services.ItemService;
+import com.anon.ecom.item.service.ItemService;
 import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
 import com.anon.ecom.itemCopy.ItemCopyRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,11 +69,11 @@ public class ItemController {
                 HttpStatus.OK);
     }
     @GetMapping(path = "/items")
-    public List<ItemDto> listItems() {
-        List<ItemEntity> items = itemService.findAll();
-        return items.stream()
-                .map(itemMapper::mapTo)
-                .collect(Collectors.toList());
+    public Page<ItemDto> listItems(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ItemEntity> itemPage = itemService.findAll(pageable);
+        return itemPage.map(itemMapper::mapTo);
     }
     @GetMapping(path = "/item/{id}")
     public ResponseEntity<ItemDto> getItem(@PathVariable("id") Long id) {

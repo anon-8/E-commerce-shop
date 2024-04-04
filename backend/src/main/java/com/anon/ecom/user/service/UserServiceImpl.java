@@ -1,9 +1,9 @@
-package com.anon.ecom.user.services;
+package com.anon.ecom.user.service;
 
-import com.anon.ecom.user.exeptions.UserNotAuthenticatedException;
-import com.anon.ecom.user.exeptions.UserNotFoundException;
 import com.anon.ecom.user.UserRepository;
 import com.anon.ecom.user.domain.entity.UserEntity;
+import com.anon.ecom.user.exception.UserNotAuthenticatedException;
+import com.anon.ecom.user.exception.UserNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).map(existingUser -> {
             Optional.ofNullable(userEntity.getFirstname()).ifPresent(existingUser::setFirstname);
             return userRepository.save(existingUser);
-        }).orElseThrow(() -> new UserNotFoundException(userEntity.getUsername()));
+        }).orElseThrow(() -> new UserNotFoundException("User not found with username: " + userEntity.getUsername()));
     }
     @Override
     public void delete(Long id) {
@@ -57,11 +57,11 @@ public class UserServiceImpl implements UserService {
     public UserEntity getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof UsernamePasswordAuthenticationToken)) {
-            throw new UserNotAuthenticatedException();
+            throw new UserNotAuthenticatedException("User not authenticated");
         }
         String username = authentication.getName();
         return userRepository.findByUsernameOrEmail(username, username)
-                .orElseThrow(() -> new UserNotFoundException(username));
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + username));
     }
 
 }

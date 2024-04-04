@@ -1,8 +1,7 @@
-package com.anon.ecom.item.services;
+package com.anon.ecom.item.service;
 
 import com.anon.ecom.item.ItemRepository;
 import com.anon.ecom.item.domain.ItemEntity;
-import com.anon.ecom.item.services.ItemService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

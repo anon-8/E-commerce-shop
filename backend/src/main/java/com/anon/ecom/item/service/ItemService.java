@@ -1,4 +1,4 @@
-package com.anon.ecom.item.services;
+package com.anon.ecom.item.service;
 
 import com.anon.ecom.item.domain.ItemEntity;
 import org.springframework.data.domain.Page;

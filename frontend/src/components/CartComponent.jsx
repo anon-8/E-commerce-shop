@@ -74,9 +74,13 @@ class CartComponent extends Component {
                 <div className="col text-center">
                     <h1>Cart Items</h1>
                 </div>
-                <div className="col-md-12 text-center">
-                    <button className="btn btn-primary" onClick={this.placeOrderFromCart}>Place Order PLN{this.totalOrderValue()}</button>
-                </div>
+                {this.totalOrderValue() > 0 && (
+                    <div className="col-md-12 text-center">
+                        <button className="btn btn-primary" onClick={this.placeOrderFromCart}>
+                            Place Order PLN{this.totalOrderValue()}
+                        </button>
+                    </div>
+                )}
                 {loading ? (
                     <p className="loading-message">Loading...</p>
                 ) : error ? (

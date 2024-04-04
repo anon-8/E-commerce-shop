@@ -1,13 +1,12 @@
 package com.anon.ecom.user;
 
 import com.anon.ecom.config.Mapper;
+import com.anon.ecom.exception.ApiRequestException;
 import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
-import com.anon.ecom.user.services.UserService;
-import org.springframework.http.HttpStatus;
+import com.anon.ecom.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +21,7 @@ public class UserController {
         this.userService = userService;
         this.userMapper = userMapper;
     }
+
     @GetMapping(path = "/users")
     public List<UserDto> listUsers() {
         List<UserEntity> users = userService.findAll();
@@ -29,28 +29,26 @@ public class UserController {
                 .map(userMapper::mapTo)
                 .collect(Collectors.toList());
     }
+
     @GetMapping(path = "/user/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
         Optional<UserEntity> foundUser = userService.findOne(id);
-        return foundUser.map(userEntity -> {
-            UserDto userDto = userMapper.mapTo(userEntity);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        if (foundUser.isPresent()) {
+            UserDto userDto = userMapper.mapTo(foundUser.get());
+            return ResponseEntity.ok(userDto);
+        } else {
+            throw new ApiRequestException("User not found with ID: " + id);
+        }
     }
+
     @PutMapping(path = "/user/{id}")
     public ResponseEntity<UserDto> fullUpdateUser(
             @PathVariable("id") Long id,
             @RequestBody UserDto userDto) {
-
-        if(userService.isExists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         userDto.setId(id);
         UserEntity userEntity = userMapper.mapFrom(userDto);
         UserEntity savedUserEntity = userService.save(userEntity);
-        return new ResponseEntity<>(
-                userMapper.mapTo(savedUserEntity),
-                HttpStatus.OK);
+        return ResponseEntity.ok(userMapper.mapTo(savedUserEntity));
     }
 
     @PatchMapping(path = "/user/{id}")
@@ -58,19 +56,14 @@ public class UserController {
             @PathVariable("id") Long id,
             @RequestBody UserDto userDto
     ) {
-        if(userService.isExists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         UserEntity userEntity = userMapper.mapFrom(userDto);
         UserEntity updatedUser = userService.partialUpdate(id, userEntity);
-        return new ResponseEntity<>(
-                userMapper.mapTo(updatedUser),
-                HttpStatus.OK);
+        return ResponseEntity.ok(userMapper.mapTo(updatedUser));
     }
+
     @DeleteMapping(path = "/user/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
-
 }

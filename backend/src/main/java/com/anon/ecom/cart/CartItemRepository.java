@@ -10,16 +10,19 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 @Repository
 public interface CartItemRepository extends CrudRepository<CartItemEntity, Long> {
-    boolean existsByItemIdAndUserIdAndSellerIdAndPrice(Long itemId, Long userId, Long sellerID, BigDecimal price);
+    boolean existsByItemIdAndUserIdAndSellerIdAndPrice(Long itemId, Long userId, Long sellerId, BigDecimal price);
+
     CartItemEntity findByItemIdAndUserIdAndSellerIdAndPrice(Long itemId, Long userId, Long sellerId, BigDecimal price);
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE CartItemEntity c SET " +
             "c.quantity = COALESCE(:#{#cartItemEntity.quantity}, c.quantity) " +
             "WHERE c.id = :#{#cartItemEntity.id}")
     void partialUpdate(@Param("cartItemEntity") CartItemEntity cartItemEntity);
+
     @Query("SELECT a FROM CartItemEntity a WHERE a.user.id = :userId")
     List<CartItemEntity> findUserCartItems(@Param("userId") Long userId);
 }
