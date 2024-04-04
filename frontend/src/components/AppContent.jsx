@@ -1,6 +1,6 @@
 import React from "react";
 import WelcomeContent from "./WelcomeContent";
-import LoginForm from "./LoginForm";
+import LoginForm from "../forms/LoginForm";
 import { request, setAuthHeader } from "../axios_helper";
 import ItemsContent from "./ItemsContent";
 import CartComponent from "./CartComponent";

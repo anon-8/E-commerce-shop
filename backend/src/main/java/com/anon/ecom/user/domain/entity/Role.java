@@ -3,6 +3,7 @@ package com.anon.ecom.user.domain.entity;
 import com.anon.ecom.user.domain.entity.Permission;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
@@ -11,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public enum Role {
+public enum Role implements GrantedAuthority {
     USER(Collections.emptySet()),
     ADMIN(
             Set.of(
@@ -45,5 +46,10 @@ public enum Role {
                 .collect(Collectors.toList()));
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
         return authorities;
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.name();
     }
 }
