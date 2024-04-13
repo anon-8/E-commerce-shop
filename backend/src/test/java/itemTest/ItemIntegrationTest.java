@@ -7,30 +7,29 @@ import com.anon.ecom.item.service.ItemServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @Testcontainers
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(classes = EcomApi.class)
-class ItemUnitTest {
+class ItemIntegrationTest {
 
     @Container
+    @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres");
 
     @Autowired
@@ -49,8 +48,6 @@ class ItemUnitTest {
                 .platform("test platform")
                 .tags(new ArrayList<>())
                 .build();
-
-        when(itemRepository.save(testItemEntity)).thenReturn(testItemEntity);
 
         ItemEntity savedItemEntity = itemService.save(testItemEntity);
         assertNotNull(savedItemEntity);
@@ -72,12 +69,28 @@ class ItemUnitTest {
 
     @Test
     void shouldFindItemById() {
-        // Mocking the behavior of itemRepository.findById()
-        when(itemRepository.findById(testItemId)).thenReturn(Optional.of(new ItemEntity()));
-
         Optional<ItemEntity> foundItem = itemService.findOne(testItemId);
+
         assertTrue(foundItem.isPresent());
     }
 
-    // Add more test cases as needed
+    @Test
+    void shouldFindAllItems() {
+        List<ItemEntity> itemList = itemService.findAll();
+        assertFalse(itemList.isEmpty());
+    }
+
+    @Test
+    void shouldUpdateItem() {
+        ItemEntity updatedItem = itemService.partialUpdate(testItemId, ItemEntity.builder().title("Updated Title").build());
+        assertNotNull(updatedItem);
+        assertEquals("Updated Title", updatedItem.getTitle());
+    }
+
+    @Test
+    void shouldDeleteItem() {
+        itemService.delete(testItemId);
+        Optional<ItemEntity> deletedItem = itemService.findOne(testItemId);
+        assertTrue(deletedItem.isEmpty());
+    }
 }
