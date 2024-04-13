@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/users")
-    public List<UserDto>   listUsers() {
+    public List<UserDto> listUsers() {
         List<UserEntity> users = userService.findAll();
         return users.stream()
                 .map(userMapper::mapTo)
@@ -57,7 +57,7 @@ public class UserController {
             @RequestBody UserDto userDto
     ) {
         UserEntity userEntity = userMapper.mapFrom(userDto);
-        UserEntity updatedUser = userService.partialUpdate(id, userEntity);
+        UserEntity updatedUser = userService.partialUpdate(id, userDto);
         return ResponseEntity.ok(userMapper.mapTo(updatedUser));
     }
 

@@ -1,5 +1,6 @@
 package com.anon.ecom.user.service;
 
+import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface UserService {
     List<UserEntity> findAll();
     Optional<UserEntity> findOne(Long id);
     boolean isExists(Long id);
-    UserEntity partialUpdate(Long id, UserEntity userEntity);
+    UserEntity partialUpdate(Long id, UserDto userDto);
     void delete(Long id);
     UserEntity getUser();
 }

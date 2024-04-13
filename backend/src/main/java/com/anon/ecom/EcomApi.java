@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.anon.ecom.auth.services", "com.anon.ecom.user", "com.anon.ecom.config"})
+@ComponentScan(basePackages = {"com.anon.ecom.*"})
 @Log
 public class EcomApi {
 

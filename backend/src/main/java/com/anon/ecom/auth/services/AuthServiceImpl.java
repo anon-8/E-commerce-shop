@@ -3,6 +3,7 @@ package com.anon.ecom.auth.services;
 import com.anon.ecom.auth.domain.AuthRequest;
 import com.anon.ecom.auth.domain.AuthResponse;
 import com.anon.ecom.auth.domain.RegisterRequest;
+import com.anon.ecom.config.JwtServiceImpl;
 import com.anon.ecom.user.domain.entity.Role;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.user.UserRepository;
@@ -23,7 +24,6 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceImpl jwtServiceImpl;
     private final AuthenticationManager authenticationManager;
-
     public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtServiceImpl jwtServiceImpl, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -43,7 +43,6 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(role)
                 .build();
-
         userRepository.save(user);
 
         var jwtToken = jwtServiceImpl.generateToken(user);

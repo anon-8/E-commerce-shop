@@ -28,8 +28,6 @@ public class UserDto {
 
     private LocalDate dateOfBirth;
 
-    private int age;
-
     private String bankAccountNumber;
 
     private String country;

@@ -1,11 +1,11 @@
 package com.anon.ecom.config;
 
-import com.anon.ecom.auth.services.JwtServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,11 +18,13 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Order(2)
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtServiceImpl jwtServiceImpl;
 
     private final UserDetailsService userDetailsService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 

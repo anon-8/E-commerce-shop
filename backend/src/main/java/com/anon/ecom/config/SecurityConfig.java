@@ -4,6 +4,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -30,6 +31,7 @@ import static jakarta.ws.rs.HttpMethod.*;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
+@Order(1)
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -83,9 +85,10 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-
         return http.build();
     }
+
+
 
     }
 

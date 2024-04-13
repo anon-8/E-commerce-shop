@@ -17,10 +17,13 @@ public class ItemServiceImpl implements ItemService {
     public ItemServiceImpl(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
+
     @Override
     public ItemEntity save(ItemEntity itemEntity) {
-
-        return itemRepository.save(itemEntity);
+        System.out.println("Received itemEntity: " + itemEntity);
+        ItemEntity savedItemEntity = itemRepository.save(itemEntity);
+        System.out.println("Saved itemEntity: " + savedItemEntity);
+        return savedItemEntity;
     }
     @Override
     public ItemEntity createUpdateItem(Long id, ItemEntity item) {

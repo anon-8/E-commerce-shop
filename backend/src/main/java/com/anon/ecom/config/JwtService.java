@@ -1,4 +1,4 @@
-package com.anon.ecom.auth.services;
+package com.anon.ecom.config;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,7 @@
 package com.anon.ecom.user.service;
 
 import com.anon.ecom.user.UserRepository;
+import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.user.exception.UserNotAuthenticatedException;
 import com.anon.ecom.user.exception.UserNotFoundException;
@@ -39,14 +40,25 @@ public class UserServiceImpl implements UserService {
     public boolean isExists(Long id) {
         return !userRepository.existsById(id);
     }
-    @Override
-    public UserEntity partialUpdate(Long id, UserEntity userEntity) {
-        userEntity.setId(id);
 
+    @Override
+    public UserEntity partialUpdate(Long id, UserDto userDto) {
         return userRepository.findById(id).map(existingUser -> {
-            Optional.ofNullable(userEntity.getFirstname()).ifPresent(existingUser::setFirstname);
+            Optional.ofNullable(userDto.getFirstname()).ifPresent(existingUser::setFirstname);
+            Optional.ofNullable(userDto.getLastname()).ifPresent(existingUser::setLastname);
+            Optional.ofNullable(userDto.getEmail()).ifPresent(existingUser::setEmail);
+            Optional.ofNullable(userDto.getPassword()).ifPresent(existingUser::setPassword);
+            Optional.ofNullable(userDto.getRole()).ifPresent(existingUser::setRole);
+
+            Optional.ofNullable(userDto.getDateOfBirth()).ifPresent(existingUser::setDateOfBirth);
+            Optional.ofNullable(userDto.getPhoneNumber()).ifPresent(existingUser::setPhoneNumber);
+            Optional.ofNullable(userDto.getBankAccountNumber()).ifPresent(existingUser::setBankAccountNumber);
+            Optional.ofNullable(userDto.getCountry()).ifPresent(existingUser::setCountry);
+            Optional.ofNullable(userDto.getCity()).ifPresent(existingUser::setCity);
+            Optional.ofNullable(userDto.getPostCode()).ifPresent(existingUser::setPostCode);
+            Optional.ofNullable(userDto.getStreet()).ifPresent(existingUser::setStreet);
             return userRepository.save(existingUser);
-        }).orElseThrow(() -> new UserNotFoundException("User not found with username: " + userEntity.getUsername()));
+        }).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
     }
     @Override
     public void delete(Long id) {
@@ -64,4 +76,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with username: " + username));
     }
 
+    public Optional<UserEntity> findById(long id) {
+        return userRepository.findById(id);
+    }
 }
