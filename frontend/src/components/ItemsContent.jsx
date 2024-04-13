@@ -10,8 +10,6 @@ class ItemsContent extends Component {
             loading: true,
             showSellOffers: {},
             quantities: {},
-            currentPage: 0,
-            pageSize: 10
         };
     }
 
@@ -20,8 +18,7 @@ class ItemsContent extends Component {
     }
 
     fetchData() {
-        const { currentPage, pageSize } = this.state;
-        axios.get(`/items?page=${currentPage}&size=${pageSize}`)
+        axios.get('/items')
             .then(response => {
                 this.setState({ data: response.data, loading: false });
             })
@@ -154,14 +151,6 @@ class ItemsContent extends Component {
                         </ul>
 
                     )}
-                </div>
-                <div className="row justify-content-center">
-                    <button
-                        onClick={() => this.setState(prevState => ({currentPage: Math.max(prevState.currentPage - 1, 0)}))}>Previous
-                    </button>
-                    <button
-                        onClick={() => this.setState(prevState => ({currentPage: prevState.currentPage + 1}))}>Next
-                    </button>
                 </div>
             </div>
         );
