@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJdbcTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource(properties = {
-        "spring.datasource.url=jdbc:postgresql://localhost:5432/ecom",
+        "spring.datasource.url=jdbc:postgresql://localhost:5432/test",
         "spring.datasource.username=postgres",
         "spring.datasource.password=anon123"
 })
@@ -41,6 +41,7 @@ class UserRepositoryTest {
     UserRepository userRepository;
 
     @Autowired
+    @MockBean
     AuthService authService;
 
     private Long testUserId;
@@ -68,7 +69,6 @@ class UserRepositoryTest {
     void tearDown() {
         userRepository.deleteById(testUserId);
     }
-
 
     @Test
     void shouldFindUserByUsername() {

@@ -69,11 +69,11 @@ public class ItemController {
                 HttpStatus.OK);
     }
     @GetMapping(path = "/items")
-    public Page<ItemDto> listItems(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ItemEntity> itemPage = itemService.findAll(pageable);
-        return itemPage.map(itemMapper::mapTo);
+    public List<ItemDto> listItems() {
+        List<ItemEntity> items = itemService.findAll();
+        return items.stream()
+                .map(itemMapper::mapTo)
+                .collect(Collectors.toList());
     }
     @GetMapping(path = "/item/{id}")
     public ResponseEntity<ItemDto> getItem(@PathVariable("id") Long id) {

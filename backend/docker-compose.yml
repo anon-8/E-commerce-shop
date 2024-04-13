@@ -8,4 +8,4 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_PASSWORD: anon123      
+      POSTGRES_PASSWORD: anon123

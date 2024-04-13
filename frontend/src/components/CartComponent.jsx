@@ -85,7 +85,7 @@ class CartComponent extends Component {
                     <p className="loading-message">Loading...</p>
                 ) : error ? (
                     <p className="error-message">Error: {error}</p>
-                ) : (
+                ): (
                     <ul className="cart-list">
                         {cartItems.map(item => (
                             <li key={item.id} className="cart-item">
