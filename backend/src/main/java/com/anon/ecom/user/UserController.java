@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/users")
-    public List<UserDto> listUsers() {
+    public List<UserDto>   listUsers() {
         List<UserEntity> users = userService.findAll();
         return users.stream()
                 .map(userMapper::mapTo)

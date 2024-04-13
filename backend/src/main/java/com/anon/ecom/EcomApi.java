@@ -9,13 +9,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"com.anon.ecom.auth.services", "com.anon.ecom.user", "com.anon.ecom.config"})
 @Log
 public class EcomApi {
 
     public static void main(String[] args) {
-        SpringApplication.run(EcomApi.class, args); }
+        SpringApplication.run(EcomApi.class, args);
+    }
 
     @Bean
     public CommandLineRunner commandLineRunner(
@@ -59,5 +62,4 @@ public class EcomApi {
             }
         };
     }
-
 }

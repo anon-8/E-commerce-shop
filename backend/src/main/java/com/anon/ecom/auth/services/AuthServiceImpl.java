@@ -23,6 +23,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceImpl jwtServiceImpl;
     private final AuthenticationManager authenticationManager;
+
     public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtServiceImpl jwtServiceImpl, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -42,11 +43,13 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(role)
                 .build();
+
         userRepository.save(user);
 
         var jwtToken = jwtServiceImpl.generateToken(user);
         return AuthResponse.builder()
                 .token(jwtToken)
+                .id(user.getId())
                 .build();
     }
     @Override
@@ -66,6 +69,7 @@ public class AuthServiceImpl implements AuthService {
         var jwtToken = jwtServiceImpl.generateToken(user);
         return AuthResponse.builder()
                 .token(jwtToken)
+                .id(user.getId())
                 .build();
     }
     @Override
