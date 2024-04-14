@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Builder
 @Entity
 @Table(name="cart_items")
-public class CartItemEntity {
+public class CartEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_item_id_seq")

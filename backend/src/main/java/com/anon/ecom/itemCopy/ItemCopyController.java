@@ -28,9 +28,9 @@ public class ItemCopyController {
     @PostMapping(path = "/put-digital-key-for-sale")
     public ResponseEntity<ItemCopyDto> putItemCopyForSale(@RequestBody ItemCopyDto itemCopyDto) {
 
-        ItemCopyDto savedItemCopyDto = itemCopyService.putItemCopyForSale(itemCopyDto);
+        ItemCopyEntity savedItemCopyEntity = itemCopyService.putItemCopyForSale(itemCopyDto);
 
-        return new ResponseEntity<>(savedItemCopyDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(itemCopyMapper.mapTo(savedItemCopyEntity), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/admin/copies")
@@ -46,7 +46,7 @@ public class ItemCopyController {
 
         UserEntity user = userService.getUser();
 
-        List<ItemCopyEntity> itemCopies = itemCopyService.findAllByUserId(user.getId());
+        List<ItemCopyEntity> itemCopies = itemCopyService.findAllSellOffersByUserId(user.getId());
 
         return itemCopies.stream()
                 .map(itemCopyMapper::mapTo)
@@ -58,7 +58,7 @@ public class ItemCopyController {
 
         UserEntity user = userService.getUser();
 
-        List<ItemCopyEntity> itemCopies = itemCopyService.findAllByUserIdAndItemId(user.getId(), itemID);
+        List<ItemCopyEntity> itemCopies = itemCopyService.findAllSellOffersByUserIdAndItemId(user.getId(), itemID);
 
         return itemCopies.stream()
                 .map(itemCopyMapper::mapTo)

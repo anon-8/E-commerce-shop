@@ -1,8 +1,6 @@
 package userTest;
 
 import com.anon.ecom.EcomApi;
-import com.anon.ecom.auth.domain.RegisterRequest;
-import com.anon.ecom.auth.services.AuthService;
 import com.anon.ecom.user.UserRepository;
 import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.Role;
@@ -38,9 +36,6 @@ class UserIntegrationTest {
     UserRepository userRepository;
 
     @Autowired
-    AuthService authService;
-
-    @Autowired
     UserService userService;
 
     private Long testUserId;
@@ -63,7 +58,7 @@ class UserIntegrationTest {
     void setUp() {
         String testUserUsername = "test";
         String testUserEmail = "test@example.com";
-        RegisterRequest testUserRequest = RegisterRequest.builder()
+        UserEntity userEntity = UserEntity.builder()
                 .username(testUserUsername)
                 .firstname("Test")
                 .lastname("Test")
@@ -71,7 +66,7 @@ class UserIntegrationTest {
                 .password("password")
                 .role(Role.USER)
                 .build();
-        testUserId = authService.register(testUserRequest).getId();
+        testUserId = userService.save(userEntity).getId();
     }
 
     @AfterEach
@@ -82,7 +77,6 @@ class UserIntegrationTest {
     @Test
     void shouldFindUserById() {
         Optional<UserEntity> optionalUser = userRepository.findById(testUserId);
-
         assertTrue(optionalUser.isPresent());
         assertEquals("test", optionalUser.get().getUsername());
     }

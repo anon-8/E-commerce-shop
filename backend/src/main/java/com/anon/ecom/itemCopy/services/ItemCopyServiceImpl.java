@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class ItemCopyServiceImpl implements ItemCopyService {
@@ -38,16 +36,8 @@ public class ItemCopyServiceImpl implements ItemCopyService {
     }
 
     @Override
-    public ItemCopyEntity save(ItemCopyEntity itemCopyEntity) {
-        return itemCopyRepository.save(itemCopyEntity);
-    }
-    @Override
     public List<ItemCopyEntity> findAll() {
-        return StreamSupport
-                .stream(
-                        itemCopyRepository.findAll().spliterator(),
-                        false)
-                .collect(Collectors.toList());
+        return itemCopyRepository.findAll();
     }
     @Override
     public Page<ItemCopyEntity> findAll(Pageable pageable) {
@@ -55,11 +45,12 @@ public class ItemCopyServiceImpl implements ItemCopyService {
     }
 
     @Override
-    public List<ItemCopyEntity> findAllByUserId(Long userId) {
+    public List<ItemCopyEntity> findAllSellOffersByUserId(Long userId) {
         return new ArrayList<>(itemCopyRepository.findAllSellOffersBySellerId(userId));
     }
+
     @Override
-    public List<ItemCopyEntity> findAllByUserIdAndItemId(Long userId, Long itemId) {
+    public List<ItemCopyEntity> findAllSellOffersByUserIdAndItemId(Long userId, Long itemId) {
         return new ArrayList<>(itemCopyRepository.findAllSellOffersBySellerIdAndItemId(userId, itemId));
     }
     @Override
@@ -73,7 +64,10 @@ public class ItemCopyServiceImpl implements ItemCopyService {
     }
 
     @Override
-    public ItemCopyDto putItemCopyForSale(ItemCopyDto itemCopyDto) {
+    public ItemCopyEntity save(ItemCopyEntity itemCopyEntity) { return itemCopyRepository.save(itemCopyEntity); }
+
+    @Override
+    public ItemCopyEntity putItemCopyForSale(ItemCopyDto itemCopyDto) {
 
         UserEntity user = userService.getUser();
 
@@ -91,7 +85,7 @@ public class ItemCopyServiceImpl implements ItemCopyService {
         itemCopyEntity.setStatus("for sale");
         itemCopyRepository.save(itemCopyEntity);
 
-        return itemCopyMapper.mapTo(itemCopyEntity);
+        return itemCopyEntity;
     }
 
 }

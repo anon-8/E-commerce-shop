@@ -1,6 +1,6 @@
 package com.anon.ecom.order.services;
 
-import com.anon.ecom.cart.domain.CartItemEntity;
+import com.anon.ecom.cart.domain.CartEntity;
 import com.anon.ecom.order.domain.OrderDto;
 import com.anon.ecom.order.domain.OrderEntity;
 
@@ -10,5 +10,5 @@ public interface OrderService {
     OrderEntity save(OrderEntity orderEntity);
     void delete(Long id);
     OrderDto placeOrderFromCart();
-    List<CartItemEntity> getUserCart(Long userId);
+    List<CartEntity> getUserCart(Long userId);
 }

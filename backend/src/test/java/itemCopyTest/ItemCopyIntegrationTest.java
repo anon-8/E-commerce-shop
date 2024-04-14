@@ -1,9 +1,12 @@
-package itemTest;
+package itemCopyTest;
 
 import com.anon.ecom.EcomApi;
-import com.anon.ecom.item.ItemRepository;
-import com.anon.ecom.item.domain.ItemEntity;
-import com.anon.ecom.item.service.ItemService;
+
+import com.anon.ecom.itemCopy.ItemCopyRepository;
+import com.anon.ecom.itemCopy.domain.ItemCopyDto;
+import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
+import com.anon.ecom.itemCopy.services.ItemCopyService;
+import com.anon.ecom.user.domain.entity.UserEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,39 +29,37 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(classes = EcomApi.class)
-class ItemIntegrationTest {
+class ItemCopyIntegrationTest {
 
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres");
 
     @Autowired
-    private ItemRepository itemRepository;
+    private ItemCopyRepository itemCopyRepository;
 
     @Autowired
-    private ItemService itemService;
+    private ItemCopyService itemCopyService;
 
-    private Long testItemId;
+    private Long testItemCopyId;
 
     @BeforeEach
     void setUp() {
-        ItemEntity testItemEntity = ItemEntity.builder()
-                .title("test title")
-                .developer("test developer")
-                .platform("test platform")
-                .tags(new ArrayList<>())
+        ItemCopyEntity testItemCopyEntity = ItemCopyEntity.builder()
+                .copyKey("AAAAA-BBBB-CCCC-DDDD-EEE")
+                .price(BigDecimal.TEN)
                 .build();
 
-        ItemEntity savedItemEntity = itemService.save(testItemEntity);
-        assertNotNull(savedItemEntity);
-        assertNotNull(savedItemEntity.getId());
+        ItemCopyEntity savedItemCopyEntity = itemCopyService.save(testItemCopyEntity);
+        assertNotNull(savedItemCopyEntity);
+        assertNotNull(savedItemCopyEntity.getId());
 
-        testItemId = savedItemEntity.getId();
+        testItemCopyId = savedItemCopyEntity.getId();
     }
 
     @AfterEach
     void tearDown() {
-        itemRepository.deleteById(testItemId);
+        itemCopyRepository.deleteById(testItemCopyId);
     }
 
     @Test
@@ -69,28 +70,21 @@ class ItemIntegrationTest {
 
     @Test
     void shouldFindItemById() {
-        Optional<ItemEntity> foundItem = itemService.findOne(testItemId);
+        Optional<ItemCopyEntity> foundItemCopy = itemCopyService.findOne(testItemCopyId);
 
-        assertTrue(foundItem.isPresent());
+        assertTrue(foundItemCopy.isPresent());
     }
 
     @Test
     void shouldFindAllItems() {
-        List<ItemEntity> itemList = itemService.findAll();
-        assertFalse(itemList.isEmpty());
-    }
-
-    @Test
-    void shouldUpdateItem() {
-        ItemEntity updatedItem = itemService.partialUpdate(testItemId, ItemEntity.builder().title("Updated Title").build());
-        assertNotNull(updatedItem);
-        assertEquals("Updated Title", updatedItem.getTitle());
+        List<ItemCopyEntity> itemCopyList = itemCopyService.findAll();
+        assertFalse(itemCopyList.isEmpty());
     }
 
     @Test
     void shouldDeleteItem() {
-        itemService.delete(testItemId);
-        Optional<ItemEntity> deletedItem = itemService.findOne(testItemId);
-        assertTrue(deletedItem.isEmpty());
+        itemCopyService.delete(testItemCopyId);
+        Optional<ItemCopyEntity> deletedItemCopy = itemCopyService.findOne(testItemCopyId);
+        assertTrue(deletedItemCopy.isEmpty());
     }
 }

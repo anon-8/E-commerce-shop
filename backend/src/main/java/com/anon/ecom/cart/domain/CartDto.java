@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartItemDto {
+public class CartDto {
     private Long id;
 
     private UserDto user;

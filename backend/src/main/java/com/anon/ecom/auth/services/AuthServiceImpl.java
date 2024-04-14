@@ -71,6 +71,7 @@ public class AuthServiceImpl implements AuthService {
                 .id(user.getId())
                 .build();
     }
+
     @Override
     public boolean existsByUsername(String username) {
 

@@ -12,9 +12,9 @@ public interface ItemCopyService {
     ItemCopyEntity save(ItemCopyEntity itemCopyEntity);
     List<ItemCopyEntity> findAll();
     Page<ItemCopyEntity> findAll(Pageable pageable);
-    List<ItemCopyEntity> findAllByUserId(Long userId);
-    List<ItemCopyEntity> findAllByUserIdAndItemId(Long userId, Long itemId);
+    List<ItemCopyEntity> findAllSellOffersByUserId(Long userId);
+    List<ItemCopyEntity> findAllSellOffersByUserIdAndItemId(Long userId, Long itemId);
     Optional<ItemCopyEntity> findOne(Long id);
     void delete(Long id);
-    ItemCopyDto putItemCopyForSale(ItemCopyDto itemCopyDto);
+    ItemCopyEntity putItemCopyForSale(ItemCopyDto itemCopyDto);
 }
