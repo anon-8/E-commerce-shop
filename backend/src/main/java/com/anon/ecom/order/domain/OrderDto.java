@@ -27,6 +27,7 @@ public class OrderDto {
     private String description;
     private String currencyCode;
     private String extOrderId;
+    private String status;
     private Integer totalAmount;
 
     private List<ItemCopyDto> copies;

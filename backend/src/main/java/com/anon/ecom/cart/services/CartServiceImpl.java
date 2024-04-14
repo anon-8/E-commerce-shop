@@ -1,7 +1,7 @@
 package com.anon.ecom.cart.services;
 import com.anon.ecom.cart.CartRepository;
-import com.anon.ecom.cart.domain.CartDto;
-import com.anon.ecom.cart.domain.CartEntity;
+import com.anon.ecom.cart.domain.CartItemDto;
+import com.anon.ecom.cart.domain.CartItemEntity;
 import com.anon.ecom.item.domain.ItemDto;
 import com.anon.ecom.item.domain.ItemEntity;
 import com.anon.ecom.item.ItemRepository;
@@ -16,6 +16,7 @@ import com.anon.ecom.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,12 +27,12 @@ public class CartServiceImpl implements CartService {
     private final UserRepository userRepository;
     private final Mapper<ItemEntity, ItemDto> itemMapper;
     private final Mapper<UserEntity, UserDto> userMapper;
-    private final Mapper<CartEntity, CartDto> cartItemMapper;
+    private final Mapper<CartItemEntity, CartItemDto> cartItemMapper;
     private final ItemCopyRepository itemCopyRepository;
     private final ItemRepository itemRepository;
     private final UserService userService;
 
-    public CartServiceImpl(CartRepository cartRepository, UserRepository userRepository, Mapper<ItemEntity, ItemDto> itemMapper, Mapper<UserEntity, UserDto> userMapper, Mapper<CartEntity, CartDto> cartItemMapper, ItemCopyRepository itemCopyRepository, ItemRepository itemRepository, UserService userService) {
+    public CartServiceImpl(CartRepository cartRepository, UserRepository userRepository, Mapper<ItemEntity, ItemDto> itemMapper, Mapper<UserEntity, UserDto> userMapper, Mapper<CartItemEntity, CartItemDto> cartItemMapper, ItemCopyRepository itemCopyRepository, ItemRepository itemRepository, UserService userService) {
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
         this.itemMapper = itemMapper;
@@ -42,25 +43,25 @@ public class CartServiceImpl implements CartService {
         this.userService = userService;
     }
     @Override
-    public List<CartEntity> findAll() {
-        List<CartEntity> cartEntities = new ArrayList<>();
+    public List<CartItemEntity> findAll() {
+        List<CartItemEntity> cartEntities = new ArrayList<>();
         cartRepository.findAll().forEach(cartEntities::add);
         return cartEntities;
     }
     @Override
-    public Optional<CartEntity> findOne(Long id) {
+    public Optional<CartItemEntity> findOne(Long id) {
         return cartRepository.findById(id);
     }
 
     @Override
-    public CartEntity saveOrPartialUpdate(CartEntity cartItemEntity) {
+    public CartItemEntity saveOrPartialUpdate(CartItemEntity cartItemEntity) {
         if (cartItemEntity.getId() != null && cartRepository.existsByItemIdAndUserIdAndSellerIdAndPrice(cartItemEntity.getItem().getId(), cartItemEntity.getUser().getId(), cartItemEntity.getSeller().getId(), cartItemEntity.getPrice())) {
             cartRepository.partialUpdate(cartItemEntity);
             return cartRepository.findById(cartItemEntity.getId())
                     .orElseThrow(() -> new EntityNotFoundException("CartItemEntity not found with id: " + cartItemEntity.getId()));
         }
         if (cartItemEntity.getQuantity() == null) {
-            return CartEntity.builder().build();
+            return CartItemEntity.builder().build();
         }
         return cartRepository.save(cartItemEntity);
     }
@@ -70,48 +71,54 @@ public class CartServiceImpl implements CartService {
         cartRepository.deleteById(id);
     }
     @Override
-    public CartDto cartManipulation(CartDto cartDto) {
+    public CartItemDto cartManipulation(CartItemDto cartItemDto) {
 
-        ItemEntity item = itemRepository.findById(cartDto.getItem().getId())
-                .orElseThrow(() -> new ItemNotFoundException(cartDto.getItem().getId()));
+        ItemEntity item = itemRepository.findById(cartItemDto.getItem().getId())
+                .orElseThrow(() -> new ItemNotFoundException(cartItemDto.getItem().getId()));
 
-        UserEntity seller = userRepository.findById(cartDto.getSeller().getId())
-                .orElseThrow(() -> new UserNotFoundException(cartDto.getSeller().getUsername()));
+        UserEntity seller = userRepository.findById(cartItemDto.getSeller().getId())
+                .orElseThrow(() -> new UserNotFoundException(cartItemDto.getSeller().getUsername()));
 
-        int itemCodesInStock = itemCopyRepository.findAllSellOffersByItemIdAndSellerIdAndPrice(seller.getId(), item.getId(), cartDto.getPrice()).size();
+        int itemCodesInStock = itemCopyRepository.findAllSellOffersByItemIdAndSellerIdAndPrice(seller.getId(), item.getId(), cartItemDto.getPrice()).size();
         if (itemCodesInStock < 1) {
-            return CartDto.builder().build();
+            return CartItemDto.builder().build();
         }
 
         UserEntity user = userService.getUser();
 
-        if (cartRepository.existsByItemIdAndUserIdAndSellerIdAndPrice(item.getId(), user.getId(), seller.getId(), cartDto.getPrice())) {
+        if (cartRepository.existsByItemIdAndUserIdAndSellerIdAndPrice(item.getId(), user.getId(), seller.getId(), cartItemDto.getPrice())) {
 
-            CartEntity cartItemEntity = cartRepository.findByItemIdAndUserIdAndSellerIdAndPrice(item.getId(), user.getId(), seller.getId(), cartDto.getPrice());
+            CartItemEntity cartItemEntity = cartRepository.findByItemIdAndUserIdAndSellerIdAndPrice(item.getId(), user.getId(), seller.getId(), cartItemDto.getPrice());
 
-            if (cartItemEntity.getQuantity() + cartDto.getQuantity() <= 0) {
+            if (cartItemEntity.getQuantity() + cartItemDto.getQuantity() <= 0) {
                 deleteCartItem(cartItemEntity.getId());
-                return CartDto.builder().build();
+                return CartItemDto.builder().build();
             } else {
-                cartItemEntity.setQuantity(Math.min(cartItemEntity.getQuantity() + cartDto.getQuantity(), itemCodesInStock));
+                cartItemEntity.setQuantity(Math.min(cartItemEntity.getQuantity() + cartItemDto.getQuantity(), itemCodesInStock));
             }
 
             return cartItemMapper.mapTo(cartItemEntity);
         } else {
-            if (cartDto.getQuantity() > itemCodesInStock) {
-                cartDto.setQuantity(itemCodesInStock);
+            if (cartItemDto.getQuantity() > itemCodesInStock) {
+                cartItemDto.setQuantity(itemCodesInStock);
             }
-            cartDto.setUser(userMapper.mapTo(user));
-            cartDto.setSeller(userMapper.mapTo(seller));
-            cartDto.setItem(itemMapper.mapTo(item));
+            cartItemDto.setUser(userMapper.mapTo(user));
+            cartItemDto.setSeller(userMapper.mapTo(seller));
+            cartItemDto.setItem(itemMapper.mapTo(item));
 
-            return cartDto;
+            return cartItemDto;
         }
     }
 
     @Override
-    public List<CartEntity> findUserCartItems(Long userId) {
+    public List<CartItemEntity> findUserCartItems(Long userId) {
         return cartRepository.findUserCartItems(userId);
+    }
+
+
+    @Override
+    public CartItemEntity findUserCartItem(Long userId, Long itemId, Long sellerId, BigDecimal price){
+        return cartRepository.findByItemIdAndUserIdAndSellerIdAndPrice(userId, itemId, sellerId, price);
     }
 }
 

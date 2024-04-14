@@ -1,18 +1,22 @@
 package com.anon.ecom.cart.services;
 
-import com.anon.ecom.cart.domain.CartDto;
-import com.anon.ecom.cart.domain.CartEntity;
+import com.anon.ecom.cart.domain.CartItemDto;
+import com.anon.ecom.cart.domain.CartItemEntity;
+import com.anon.ecom.item.domain.ItemEntity;
+import com.anon.ecom.user.domain.entity.UserEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 public interface CartService {
-    List<CartEntity> findAll();
-    Optional<CartEntity> findOne(Long id);
-    CartEntity saveOrPartialUpdate(CartEntity cartItemEntity);
+    List<CartItemEntity> findAll();
+    Optional<CartItemEntity> findOne(Long id);
+    CartItemEntity saveOrPartialUpdate(CartItemEntity cartItemEntity);
     void deleteCartItem(Long id);
-    CartDto cartManipulation(CartDto cartDto);
+    CartItemDto cartManipulation(CartItemDto cartItemDto);
 
-    List<CartEntity> findUserCartItems(Long userId);
+    List<CartItemEntity> findUserCartItems(Long userId);
 
+    CartItemEntity findUserCartItem(Long userId, Long itemId, Long sellerId, BigDecimal price);
 }

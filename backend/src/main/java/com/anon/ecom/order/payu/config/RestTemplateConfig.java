@@ -1,4 +1,4 @@
-package com.anon.ecom.order.payu;
+package com.anon.ecom.order.payu.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
