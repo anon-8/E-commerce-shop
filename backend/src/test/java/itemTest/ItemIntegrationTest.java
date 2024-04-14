@@ -3,7 +3,7 @@ package itemTest;
 import com.anon.ecom.EcomApi;
 import com.anon.ecom.item.ItemRepository;
 import com.anon.ecom.item.domain.ItemEntity;
-import com.anon.ecom.item.service.ItemService;
+import com.anon.ecom.item.services.ItemService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

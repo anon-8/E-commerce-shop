@@ -5,7 +5,7 @@ import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
 import com.anon.ecom.itemCopy.services.ItemCopyService;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
-import com.anon.ecom.user.service.UserService;
+import com.anon.ecom.user.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

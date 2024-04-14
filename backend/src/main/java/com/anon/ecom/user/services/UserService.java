@@ -1,4 +1,4 @@
-package com.anon.ecom.user.service;
+package com.anon.ecom.user.services;
 
 import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;

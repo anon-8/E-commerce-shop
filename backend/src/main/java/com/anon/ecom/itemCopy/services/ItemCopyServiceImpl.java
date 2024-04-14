@@ -1,7 +1,7 @@
 package com.anon.ecom.itemCopy.services;
 
 import com.anon.ecom.item.domain.ItemEntity;
-import com.anon.ecom.item.exception.ItemNotFoundException;
+import com.anon.ecom.item.exceptions.ItemNotFoundException;
 import com.anon.ecom.itemCopy.ItemCopyRepository;
 import com.anon.ecom.itemCopy.domain.ItemCopyDto;
 import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
@@ -9,8 +9,8 @@ import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
 import com.anon.ecom.item.ItemRepository;
 import com.anon.ecom.user.UserRepository;
-import com.anon.ecom.user.exception.UserNotFoundException;
-import com.anon.ecom.user.service.UserService;
+import com.anon.ecom.user.exceptions.UserNotFoundException;
+import com.anon.ecom.user.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

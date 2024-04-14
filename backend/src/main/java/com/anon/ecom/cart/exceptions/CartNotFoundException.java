@@ -1,4 +1,4 @@
-package com.anon.ecom.cart.exception;
+package com.anon.ecom.cart.exceptions;
 
 public class CartNotFoundException extends RuntimeException{
 

@@ -1,10 +1,10 @@
-package com.anon.ecom.user.service;
+package com.anon.ecom.user.services;
 
 import com.anon.ecom.user.UserRepository;
 import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
-import com.anon.ecom.user.exception.UserNotAuthenticatedException;
-import com.anon.ecom.user.exception.UserNotFoundException;
+import com.anon.ecom.user.exceptions.UserNotAuthenticatedException;
+import com.anon.ecom.user.exceptions.UserNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

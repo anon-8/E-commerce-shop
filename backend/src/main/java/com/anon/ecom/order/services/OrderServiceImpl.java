@@ -11,7 +11,7 @@ import com.anon.ecom.order.domain.OrderEntity;
 import com.anon.ecom.order.exceptions.OrderProcessingException;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
-import com.anon.ecom.user.service.UserService;
+import com.anon.ecom.user.services.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;

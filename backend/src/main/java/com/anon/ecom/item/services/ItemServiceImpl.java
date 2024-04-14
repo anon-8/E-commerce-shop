@@ -1,4 +1,4 @@
-package com.anon.ecom.item.service;
+package com.anon.ecom.item.services;
 
 import com.anon.ecom.item.ItemRepository;
 import com.anon.ecom.item.domain.ItemEntity;

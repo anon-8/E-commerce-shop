@@ -1,4 +1,4 @@
-package com.anon.ecom.user.exception;
+package com.anon.ecom.user.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 

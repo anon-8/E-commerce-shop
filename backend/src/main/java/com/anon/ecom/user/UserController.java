@@ -4,7 +4,7 @@ import com.anon.ecom.config.Mapper;
 import com.anon.ecom.exception.ApiRequestException;
 import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
-import com.anon.ecom.user.service.UserService;
+import com.anon.ecom.user.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
