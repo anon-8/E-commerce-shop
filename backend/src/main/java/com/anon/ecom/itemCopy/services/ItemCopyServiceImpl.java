@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +48,11 @@ public class ItemCopyServiceImpl implements ItemCopyService {
     @Override
     public List<ItemCopyEntity> findAllSellOffersByUserId(Long userId) {
         return new ArrayList<>(itemCopyRepository.findAllSellOffersBySellerId(userId));
+    }
+
+    @Override
+    public List<ItemCopyEntity> findLatestSellOffersByItemIdAndSellerIdAndPrice(Long itemId, Long sellerId, BigDecimal price) {
+        return itemCopyRepository.findLatestSellOffersByItemIdAndSellerIdAndPrice(itemId, sellerId, price);
     }
 
     @Override

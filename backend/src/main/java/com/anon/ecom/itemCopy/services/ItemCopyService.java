@@ -5,6 +5,7 @@ import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,9 @@ public interface ItemCopyService {
     List<ItemCopyEntity> findAll();
     Page<ItemCopyEntity> findAll(Pageable pageable);
     List<ItemCopyEntity> findAllSellOffersByUserId(Long userId);
+
+    List<ItemCopyEntity> findLatestSellOffersByItemIdAndSellerIdAndPrice(Long itemId, Long sellerId, BigDecimal price);
+
     List<ItemCopyEntity> findAllSellOffersByUserIdAndItemId(Long userId, Long itemId);
     Optional<ItemCopyEntity> findOne(Long id);
     void delete(Long id);

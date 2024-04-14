@@ -1,18 +1,17 @@
 package com.anon.ecom.order.services;
 
 import com.anon.ecom.cart.domain.CartEntity;
+import com.anon.ecom.cart.services.CartService;
 import com.anon.ecom.item.domain.ItemEntity;
 import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
+import com.anon.ecom.itemCopy.services.ItemCopyService;
 import com.anon.ecom.order.OrderRepository;
 import com.anon.ecom.order.domain.OrderDto;
 import com.anon.ecom.order.domain.OrderEntity;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
-import com.anon.ecom.cart.CartRepository;
-import com.anon.ecom.itemCopy.ItemCopyRepository;
 import com.anon.ecom.user.service.UserService;
 import org.springframework.stereotype.Service;
-//import com.anon.ecom.payU.PayU;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,14 +21,15 @@ import java.util.UUID;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final CartRepository cartRepository;
-    private final ItemCopyRepository itemCopyRepository;
+    private final CartService cartService;
     private final UserService userService;
+    private final ItemCopyService itemCopyService;
     private final Mapper<OrderEntity, OrderDto> orderMapper;
-    public OrderServiceImpl(OrderRepository orderRepository, CartRepository cartRepository, ItemCopyRepository itemCopyRepository, UserService userService, Mapper<OrderEntity, OrderDto> orderMapper) {
+
+    public OrderServiceImpl(UserService userService, Mapper<OrderEntity, OrderDto> orderMapper, ItemCopyService itemCopyService, OrderRepository orderRepository, CartService cartService) {
         this.orderRepository = orderRepository;
-        this.cartRepository = cartRepository;
-        this.itemCopyRepository = itemCopyRepository;
+        this.cartService = cartService;
+        this.itemCopyService = itemCopyService;
         this.userService = userService;
         this.orderMapper = orderMapper;
     }
@@ -37,15 +37,17 @@ public class OrderServiceImpl implements OrderService {
     public OrderEntity save(OrderEntity orderEntity) {
         return orderRepository.save(orderEntity);
     }
+
     @Override
     public void delete(Long id) {
         orderRepository.deleteById(id);
     }
+
     @Override
     public List<CartEntity> getUserCart(Long userId){
-
-        return cartRepository.findUserCartItems(userId);
+        return cartService.findUserCartItems(userId);
     }
+
     @Override
     public OrderDto placeOrderFromCart() {
         UserEntity user = userService.getUser();
@@ -61,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
 
                 .copies(new ArrayList<>())
                 .build();
-        orderEntity = orderRepository.save(orderEntity);
+        orderEntity = save(orderEntity);
 
         int totalAmount = 0;
         List<ItemCopyEntity> itemCopiesToSave = new ArrayList<>();
@@ -76,15 +78,15 @@ public class OrderServiceImpl implements OrderService {
 
             totalAmount = totalAmount + (quantity * (price.multiply(multiplier).intValue()));
 
-            List<ItemCopyEntity> itemCopies = itemCopyRepository.findLatestSellOffersByItemIdAndSellerIdAndPrice(item.getId(), seller.getId(), price);
+            List<ItemCopyEntity> itemCopies = itemCopyService.findLatestSellOffersByItemIdAndSellerIdAndPrice(item.getId(), seller.getId(), price);
 
             for (int i = 0; i < quantity; i++) {
                 ItemCopyEntity itemCopy = itemCopies.get(i);
                 itemCopy.setStatus("pending");
                 itemCopy.setOrder(orderEntity);
-                itemCopyRepository.save(itemCopy);
+                itemCopyService.save(itemCopy);
             }
-            cartRepository.delete( cartItem );
+            cartService.deleteCartItem(cartItem.getId());
         }
 
         orderEntity.setPaymentId(UUID.randomUUID().toString());
@@ -95,5 +97,5 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.mapTo(orderEntity);
     }
-    }
+}
 

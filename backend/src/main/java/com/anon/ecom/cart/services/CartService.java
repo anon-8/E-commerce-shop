@@ -13,4 +13,6 @@ public interface CartService {
     void deleteCartItem(Long id);
     CartDto cartManipulation(CartDto cartDto);
 
+    List<CartEntity> findUserCartItems(Long userId);
+
 }

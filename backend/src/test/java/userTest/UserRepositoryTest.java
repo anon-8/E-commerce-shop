@@ -2,10 +2,8 @@ package userTest;
 
 import com.anon.ecom.EcomApi;
 import com.anon.ecom.user.UserRepository;
-import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.Role;
 import com.anon.ecom.user.domain.entity.UserEntity;
-import com.anon.ecom.user.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(classes = EcomApi.class)
-class UserIntegrationTest {
+class UserRepositoryTest {
 
     @Container
     @ServiceConnection
@@ -34,9 +32,6 @@ class UserIntegrationTest {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    UserService userService;
 
     private Long testUserId;
 
@@ -66,7 +61,7 @@ class UserIntegrationTest {
                 .password("password")
                 .role(Role.USER)
                 .build();
-        testUserId = userService.save(userEntity).getId();
+        testUserId = userRepository.save(userEntity).getId();
     }
 
     @AfterEach
@@ -99,26 +94,6 @@ class UserIntegrationTest {
         assertUserDetails(user);
     }
 
-    @Test
-    void shouldPartialUpdate() {
-        UserDto userDto = new UserDto();
-        userDto.setFirstname("John");
-        userDto.setLastname("Doe");
-        userDto.setEmail("john.doe@example.com");
-        userDto.setPassword("password");
-        userDto.setCity("test");
-        userDto.setCountry("test");
-
-        userService.partialUpdate(testUserId, userDto);
-
-        Optional<UserEntity> updatedUser = userRepository.findById(testUserId);
-        assertEquals(userDto.getFirstname(), updatedUser.get().getFirstname());
-        assertEquals(userDto.getLastname(), updatedUser.get().getLastname());
-        assertEquals(userDto.getEmail(), updatedUser.get().getEmail());
-        assertEquals(userDto.getPassword(), updatedUser.get().getPassword());
-        assertEquals(userDto.getCountry(), updatedUser.get().getCountry());
-        assertEquals(userDto.getCity(), updatedUser.get().getCity());
-    }
 
     @Test
     void shouldDeleteUser() {

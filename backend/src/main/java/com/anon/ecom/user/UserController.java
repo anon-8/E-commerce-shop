@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping(path = "/user/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
-        Optional<UserEntity> foundUser = userService.findOne(id);
+        Optional<UserEntity> foundUser = userService.findById(id);
         if (foundUser.isPresent()) {
             UserDto userDto = userMapper.mapTo(foundUser.get());
             return ResponseEntity.ok(userDto);

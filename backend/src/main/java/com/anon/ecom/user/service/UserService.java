@@ -9,9 +9,10 @@ import java.util.Optional;
 public interface UserService {
     UserEntity save(UserEntity userEntity);
     List<UserEntity> findAll();
-    Optional<UserEntity> findOne(Long id);
     boolean isExists(Long id);
     UserEntity partialUpdate(Long id, UserDto userDto);
     void delete(Long id);
     UserEntity getUser();
+
+    Optional<UserEntity> findById(Long existingUserId);
 }

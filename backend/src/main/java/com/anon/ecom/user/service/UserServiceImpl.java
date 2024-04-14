@@ -30,11 +30,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserEntity> findAll() {
-        return new ArrayList<>(userRepository
-                .findAll());
+        return new ArrayList<>(userRepository.findAll());
     }
     @Override
-    public Optional<UserEntity> findOne(Long id) {return userRepository.findById(id);
+    public Optional<UserEntity> findById(Long id) {return userRepository.findById(id);
     }
     @Override
     public boolean isExists(Long id) {
@@ -74,9 +73,5 @@ public class UserServiceImpl implements UserService {
         String username = authentication.getName();
         return userRepository.findByUsernameOrEmail(username, username)
                 .orElseThrow(() -> new UserNotFoundException("User not found with username: " + username));
-    }
-
-    public Optional<UserEntity> findById(long id) {
-        return userRepository.findById(id);
     }
 }

@@ -108,6 +108,11 @@ public class CartServiceImpl implements CartService {
             return cartDto;
         }
     }
+
+    @Override
+    public List<CartEntity> findUserCartItems(Long userId) {
+        return cartRepository.findUserCartItems(userId);
+    }
 }
 
 
