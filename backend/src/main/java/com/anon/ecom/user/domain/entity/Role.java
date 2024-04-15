@@ -1,6 +1,5 @@
 package com.anon.ecom.user.domain.entity;
 
-import com.anon.ecom.user.domain.entity.Permission;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

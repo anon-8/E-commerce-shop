@@ -1,9 +1,9 @@
 package com.anon.ecom.user;
 
 import com.anon.ecom.config.Mapper;
-import com.anon.ecom.exception.ApiRequestException;
 import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
+import com.anon.ecom.user.exceptions.UserNotFoundException;
 import com.anon.ecom.user.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +37,7 @@ public class UserController {
             UserDto userDto = userMapper.mapTo(foundUser.get());
             return ResponseEntity.ok(userDto);
         } else {
-            throw new ApiRequestException("User not found with ID: " + id);
+            throw new UserNotFoundException("User not found with ID: " + id);
         }
     }
 
