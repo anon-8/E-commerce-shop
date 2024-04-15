@@ -17,8 +17,11 @@ import java.util.Objects;
 
 @Component
 public class PayU {
-    private final PayUApiCredentials configuration;
+
     private final RestTemplate http;
+
+    private final PayUApiCredentials configuration;
+
     @Autowired
     public PayU(PayUApiCredentials configuration, RestTemplate http) {
         this.configuration = configuration;

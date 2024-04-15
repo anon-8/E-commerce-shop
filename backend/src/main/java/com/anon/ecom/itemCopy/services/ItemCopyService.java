@@ -15,7 +15,7 @@ public interface ItemCopyService {
     Page<ItemCopyEntity> findAll(Pageable pageable);
     List<ItemCopyEntity> findAllSellOffersByUserId(Long userId);
 
-    List<ItemCopyEntity> findLatestSellOffersByItemIdAndSellerIdAndPrice(Long itemId, Long sellerId, BigDecimal price);
+    List<ItemCopyEntity> findOldestSellOffersByItemIdAndSellerIdAndPrice(Long itemId, Long sellerId, BigDecimal price);
 
     List<ItemCopyEntity> findAllSellOffersByUserIdAndItemId(Long userId, Long itemId);
     Optional<ItemCopyEntity> findOne(Long id);

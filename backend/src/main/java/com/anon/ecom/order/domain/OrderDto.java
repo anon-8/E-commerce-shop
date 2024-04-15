@@ -17,7 +17,7 @@ public class OrderDto {
 
     private Long id;
 
-    private UserDto user;
+    private UserDto buyer;
 
     private String paymentId;
 

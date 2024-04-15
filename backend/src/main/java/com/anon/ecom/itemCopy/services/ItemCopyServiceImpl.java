@@ -51,8 +51,8 @@ public class ItemCopyServiceImpl implements ItemCopyService {
     }
 
     @Override
-    public List<ItemCopyEntity> findLatestSellOffersByItemIdAndSellerIdAndPrice(Long itemId, Long sellerId, BigDecimal price) {
-        return itemCopyRepository.findLatestSellOffersByItemIdAndSellerIdAndPrice(itemId, sellerId, price);
+    public List<ItemCopyEntity> findOldestSellOffersByItemIdAndSellerIdAndPrice(Long itemId, Long sellerId, BigDecimal price) {
+        return itemCopyRepository.findOldestSellOffersByItemIdAndSellerIdAndPrice(itemId, sellerId, price);
     }
 
     @Override

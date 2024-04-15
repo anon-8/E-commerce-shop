@@ -17,9 +17,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -71,30 +69,27 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto placeOrderFromCart() {
         UserEntity user = userService.getUser();
         List<CartItemEntity> cart = getUserCart(user.getId());
-        OrderEntity orderEntity = createOrderEntity(user);
-        for (CartItemEntity cartItem : cart) {
-            orderEntity = processCartItemOrder(cartItem, orderEntity);
-        }
-        saveOrderEntity(orderEntity);
-        return orderMapper.mapTo(orderEntity);
+        OrderEntity userOrderEntity = createUserOrderEntity(user);
+        OrderEntity processedOrderEntity = processCartOrder(cart, userOrderEntity);
+        saveOrderEntity(processedOrderEntity);
+        return orderMapper.mapTo(processedOrderEntity);
     }
 
     @Override
     public OrderDto placeOrder(Long itemId, Long sellerId, BigDecimal price) {
          UserEntity user = userService.getUser();
          CartItemEntity cartItemEntity = getUserCartItem(user.getId(), itemId, sellerId, price);
-         OrderEntity orderEntity = createOrderEntity(user);
-         OrderEntity processedCartItemOrder = processCartItemOrder(cartItemEntity, orderEntity);
+         OrderEntity userOrderEntity = createUserOrderEntity(user);
+         OrderEntity processedCartItemOrder = processCartOrder(Collections.singletonList(cartItemEntity), userOrderEntity);
          saveOrderEntity(processedCartItemOrder);
          return orderMapper.mapTo(processedCartItemOrder);
     }
 
-    private OrderEntity createOrderEntity(UserEntity user) {
+    private OrderEntity createUserOrderEntity(UserEntity user) {
         OrderEntity orderEntity = OrderEntity.builder()
                 .paymentId(UUID.randomUUID().toString())
                 .buyer(user)
                 .status("pending")
-                .notifyUrl("https://ecom.com/notify")
                 .customerIp("127.0.0.1")
                 .description("Digital Key Marketplace")
                 .currencyCode("PLN")
@@ -105,29 +100,39 @@ public class OrderServiceImpl implements OrderService {
         return orderEntity;
     }
 
-    private OrderEntity processCartItemOrder(CartItemEntity cartItemEntity, OrderEntity orderEntity) {
-        ItemEntity item = cartItemEntity.getItem();
-        UserEntity seller = cartItemEntity.getSeller();
-        BigDecimal price = cartItemEntity.getPrice();
-        Integer quantity = cartItemEntity.getQuantity();
+    private OrderEntity processCartOrder(List<CartItemEntity> cart, OrderEntity orderEntity) {
 
-        int totalAmount = orderEntity.getTotalAmount() + calculateTotalAmount(price, quantity);
-        orderEntity.setTotalAmount(totalAmount);
+        for (CartItemEntity cartItemEntity : cart) {
 
-        List<ItemCopyEntity> itemCopies = findSellOffers(item, seller, price);
+            ItemEntity item = cartItemEntity.getItem();
+            UserEntity seller = cartItemEntity.getSeller();
+            BigDecimal price = cartItemEntity.getPrice();
+            Integer quantity = cartItemEntity.getQuantity();
+            List<ItemCopyEntity> itemCopies = findSellOffers(item, seller, price);
 
-        for (ItemCopyEntity itemCopyEntity : itemCopies) {
-            itemCopyEntity.setStatus("pending");
-            itemCopyEntity.setOrder(orderEntity);
-            itemCopyService.save(itemCopyEntity);
-            orderEntity.getCopies().add(itemCopyEntity);
+            if (itemCopies.size() < quantity) {
+                throw new OrderProcessingException("Not enough items for sale");
+            }
+
+            int totalAmount = orderEntity.getTotalAmount() + calculateTotalAmount(price, quantity);
+            orderEntity.setTotalAmount(totalAmount);
+
+            int count = 1;
+            for (ItemCopyEntity itemCopyEntity : itemCopies) {
+                if(count > quantity) break;
+                count++;
+                itemCopyEntity.setStatus("pending");
+                itemCopyEntity.setOrder(orderEntity);
+                itemCopyService.save(itemCopyEntity);
+                orderEntity.getCopies().add(itemCopyEntity);
+            }
+            cartService.deleteCartItem(cartItemEntity.getId());
         }
-        cartService.deleteCartItem(cartItemEntity.getId());
         return orderEntity;
     }
 
     private List<ItemCopyEntity> findSellOffers(ItemEntity item, UserEntity seller, BigDecimal price) {
-        return itemCopyService.findLatestSellOffersByItemIdAndSellerIdAndPrice(item.getId(), seller.getId(), price);
+        return itemCopyService.findOldestSellOffersByItemIdAndSellerIdAndPrice(item.getId(), seller.getId(), price);
     }
 
     private int calculateTotalAmount(BigDecimal price, Integer quantity) {

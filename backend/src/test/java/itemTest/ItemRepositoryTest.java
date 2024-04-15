@@ -1,12 +1,8 @@
-package itemCopyTest;
+package itemTest;
 
 import com.anon.ecom.EcomApi;
-
-import com.anon.ecom.itemCopy.ItemCopyRepository;
-import com.anon.ecom.itemCopy.domain.ItemCopyDto;
-import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
-import com.anon.ecom.itemCopy.services.ItemCopyService;
-import com.anon.ecom.user.domain.entity.UserEntity;
+import com.anon.ecom.item.ItemRepository;
+import com.anon.ecom.item.domain.ItemEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,11 +11,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,37 +26,37 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(classes = EcomApi.class)
-class ItemCopyIntegrationTest {
+@TestPropertySource(locations = "classpath:application.properties")
+class ItemRepositoryTest {
 
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres");
 
     @Autowired
-    private ItemCopyRepository itemCopyRepository;
+    ItemRepository itemRepository;
 
-    @Autowired
-    private ItemCopyService itemCopyService;
-
-    private Long testItemCopyId;
+    private Long testItemId;
 
     @BeforeEach
     void setUp() {
-        ItemCopyEntity testItemCopyEntity = ItemCopyEntity.builder()
-                .copyKey("AAAAA-BBBB-CCCC-DDDD-EEE")
-                .price(BigDecimal.TEN)
+        ItemEntity testItemEntity = ItemEntity.builder()
+                .title("test title")
+                .developer("test developer")
+                .platform("test platform")
+                .tags(new ArrayList<>())
                 .build();
 
-        ItemCopyEntity savedItemCopyEntity = itemCopyService.save(testItemCopyEntity);
-        assertNotNull(savedItemCopyEntity);
-        assertNotNull(savedItemCopyEntity.getId());
+        ItemEntity savedItemEntity = itemRepository.save(testItemEntity);
+        assertNotNull(savedItemEntity);
+        assertNotNull(savedItemEntity.getId());
 
-        testItemCopyId = savedItemCopyEntity.getId();
+        testItemId = savedItemEntity.getId();
     }
 
     @AfterEach
     void tearDown() {
-        itemCopyRepository.deleteById(testItemCopyId);
+        itemRepository.deleteById(testItemId);
     }
 
     @Test
@@ -70,21 +67,21 @@ class ItemCopyIntegrationTest {
 
     @Test
     void shouldFindItemById() {
-        Optional<ItemCopyEntity> foundItemCopy = itemCopyService.findOne(testItemCopyId);
+        Optional<ItemEntity> foundItem = itemRepository.findById(testItemId);
 
-        assertTrue(foundItemCopy.isPresent());
+        assertTrue(foundItem.isPresent());
     }
 
     @Test
     void shouldFindAllItems() {
-        List<ItemCopyEntity> itemCopyList = itemCopyService.findAll();
-        assertFalse(itemCopyList.isEmpty());
+        List<ItemEntity> itemList = itemRepository.findAll();
+        assertFalse(itemList.isEmpty());
     }
 
     @Test
     void shouldDeleteItem() {
-        itemCopyService.delete(testItemCopyId);
-        Optional<ItemCopyEntity> deletedItemCopy = itemCopyService.findOne(testItemCopyId);
-        assertTrue(deletedItemCopy.isEmpty());
+        itemRepository.deleteById(testItemId);
+        Optional<ItemEntity> deletedItem = itemRepository.findById(testItemId);
+        assertTrue(deletedItem.isEmpty());
     }
 }

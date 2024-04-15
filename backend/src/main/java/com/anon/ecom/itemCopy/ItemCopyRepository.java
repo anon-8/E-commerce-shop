@@ -25,8 +25,8 @@ public interface ItemCopyRepository extends CrudRepository<ItemCopyEntity, Long>
     @Query("SELECT a FROM ItemCopyEntity a WHERE a.seller.id = :sellerId AND a.item.id = :itemId AND a.status='for sale'")
     List<ItemCopyEntity> findAllSellOffersBySellerIdAndItemId(@Param("sellerId") Long sellerId,
                                                               @Param("itemId") Long itemId);
-    @Query("SELECT a FROM ItemCopyEntity a WHERE a.seller.id = :sellerId AND a.item.id = :itemId AND a.price = :price AND a.status = 'for sale' ORDER BY a.createdAt DESC")
-    List<ItemCopyEntity> findLatestSellOffersByItemIdAndSellerIdAndPrice(
+    @Query("SELECT a FROM ItemCopyEntity a WHERE a.seller.id = :sellerId AND a.item.id = :itemId AND a.price = :price AND a.status = 'for sale' ORDER BY a.createdAt")
+    List<ItemCopyEntity> findOldestSellOffersByItemIdAndSellerIdAndPrice(
             @Param("itemId") Long itemId,
             @Param("sellerId") Long sellerId,
             @Param("price") BigDecimal price
