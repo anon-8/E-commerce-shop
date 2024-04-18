@@ -5,6 +5,7 @@ import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.user.exceptions.UserNotFoundException;
 import com.anon.ecom.user.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -12,17 +13,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/auth/management")
+@RequestMapping("/api/auth")
 public class UserController {
     private final UserService userService;
     private final Mapper<UserEntity, UserDto> userMapper;
 
+    @Autowired
     public UserController(UserService userService, Mapper<UserEntity, UserDto> userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
     }
 
-    @GetMapping(path = "/users")
+    @GetMapping(path = "/management/users")
     public List<UserDto> listUsers() {
         List<UserEntity> users = userService.findAll();
         return users.stream()
@@ -30,7 +32,7 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(path = "/user/{id}")
+    @GetMapping(path = "/management/user/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
         Optional<UserEntity> foundUser = userService.findById(id);
         if (foundUser.isPresent()) {
@@ -41,27 +43,27 @@ public class UserController {
         }
     }
 
-    @PutMapping(path = "/user/{id}")
-    public ResponseEntity<UserDto> fullUpdateUser(
-            @PathVariable("id") Long id,
-            @RequestBody UserDto userDto) {
-        userDto.setId(id);
-        UserEntity userEntity = userMapper.mapFrom(userDto);
-        UserEntity savedUserEntity = userService.save(userEntity);
-        return ResponseEntity.ok(userMapper.mapTo(savedUserEntity));
-    }
 
-    @PatchMapping(path = "/user/{id}")
-    public ResponseEntity<UserDto> partialUpdate(
+    @PatchMapping(path = "/admin/partial-update-user/{id}")
+    public ResponseEntity<UserDto> partialUpdateUser(
             @PathVariable("id") Long id,
             @RequestBody UserDto userDto
     ) {
-        UserEntity userEntity = userMapper.mapFrom(userDto);
-        UserEntity updatedUser = userService.partialUpdate(id, userDto);
-        return ResponseEntity.ok(userMapper.mapTo(updatedUser));
+        UserEntity updatedUserEntity = userService.partialUpdate(id, userDto);
+        return ResponseEntity.ok(userMapper.mapTo(updatedUserEntity));
     }
 
-    @DeleteMapping(path = "/user/{id}")
+    @PatchMapping(path = "/partial-update-user")
+    public ResponseEntity<UserDto> userPartialUpdate(
+            @RequestBody UserDto userDto
+    ) {
+        UserEntity user = userService.getUser();
+        UserEntity updatedUserEntity = userService.partialUpdate(user.getId(), userDto);
+        return ResponseEntity.ok(userMapper.mapTo(updatedUserEntity));
+    }
+
+
+    @DeleteMapping(path = "/admin/user/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();

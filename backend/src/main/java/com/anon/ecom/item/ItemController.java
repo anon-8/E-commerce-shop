@@ -9,6 +9,7 @@ import com.anon.ecom.itemCopy.domain.ItemCopyEntity;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
 import com.anon.ecom.itemCopy.ItemCopyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class ItemController {
 
     private final ItemCopyRepository itemCopyRepository;
 
+    @Autowired
     public ItemController(Mapper<ItemEntity, ItemDto> itemMapper, ItemService itemService, Mapper<UserEntity, UserDto> userMapper, ItemCopyRepository itemCopyRepository) {
         this.itemMapper = itemMapper;
         this.itemService = itemService;

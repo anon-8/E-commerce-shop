@@ -3,10 +3,7 @@ package com.anon.ecom.cart.domain;
 import com.anon.ecom.item.domain.ItemEntity;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 @Data
@@ -15,9 +12,11 @@ import java.math.BigDecimal;
 @Builder
 @Entity
 @Table(name="cart_items")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CartItemEntity {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_item_id_seq")
     private Long id;
 

@@ -1,4 +1,4 @@
-package com.anon.ecom.config;
+package com.anon.ecom.auth.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

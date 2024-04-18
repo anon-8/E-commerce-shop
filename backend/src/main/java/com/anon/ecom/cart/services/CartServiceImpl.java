@@ -14,6 +14,7 @@ import com.anon.ecom.user.exceptions.UserNotFoundException;
 import com.anon.ecom.config.Mapper;
 import com.anon.ecom.user.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -32,6 +33,7 @@ public class CartServiceImpl implements CartService {
     private final ItemRepository itemRepository;
     private final UserService userService;
 
+    @Autowired
     public CartServiceImpl(CartRepository cartRepository, UserRepository userRepository, Mapper<ItemEntity, ItemDto> itemMapper, Mapper<UserEntity, UserDto> userMapper, Mapper<CartItemEntity, CartItemDto> cartItemMapper, ItemCopyRepository itemCopyRepository, ItemRepository itemRepository, UserService userService) {
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;

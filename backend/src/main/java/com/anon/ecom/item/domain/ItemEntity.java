@@ -1,13 +1,9 @@
 package com.anon.ecom.item.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 
-import java.math.BigDecimal;
 import java.util.List;
 @Data
 @AllArgsConstructor
@@ -15,9 +11,11 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name="items")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ItemEntity {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_id_seq")
     private Long id;
 

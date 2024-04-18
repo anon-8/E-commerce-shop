@@ -3,10 +3,10 @@ package com.anon.ecom.auth.services;
 import com.anon.ecom.auth.domain.AuthRequest;
 import com.anon.ecom.auth.domain.AuthResponse;
 import com.anon.ecom.auth.domain.RegisterRequest;
-import com.anon.ecom.config.JwtServiceImpl;
 import com.anon.ecom.user.domain.entity.Role;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +24,8 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceImpl jwtServiceImpl;
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
     public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtServiceImpl jwtServiceImpl, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

@@ -3,6 +3,7 @@ import com.anon.ecom.auth.domain.AuthRequest;
 import com.anon.ecom.auth.domain.AuthResponse;
 import com.anon.ecom.auth.services.AuthService;
 import com.anon.ecom.auth.domain.RegisterRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    @Autowired
     public AuthController(AuthService authService){
         this.authService = authService;
     }

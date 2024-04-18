@@ -6,6 +6,7 @@ import com.anon.ecom.auth.services.AuthService;
 import com.anon.ecom.user.UserRepository;
 import com.anon.ecom.user.domain.entity.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

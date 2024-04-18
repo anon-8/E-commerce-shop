@@ -11,6 +11,7 @@ import com.anon.ecom.item.ItemRepository;
 import com.anon.ecom.user.UserRepository;
 import com.anon.ecom.user.exceptions.UserNotFoundException;
 import com.anon.ecom.user.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class ItemCopyServiceImpl implements ItemCopyService {
     private final UserRepository userRepository;
     private final Mapper<ItemCopyEntity, ItemCopyDto> itemCopyMapper;
     private final ItemRepository itemRepository;
+    @Autowired
     public ItemCopyServiceImpl(UserService userService, ItemCopyRepository itemCopyRepository, UserRepository userRepository, Mapper<ItemCopyEntity, ItemCopyDto> itemCopyMapper, ItemRepository itemRepository) {
         this.userService = userService;
         this.itemCopyRepository = itemCopyRepository;

@@ -4,6 +4,7 @@ import com.anon.ecom.cart.domain.CartItemDto;
 import com.anon.ecom.cart.domain.CartItemEntity;
 import com.anon.ecom.cart.services.CartService;
 import com.anon.ecom.config.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class CartController {
 
     private final Mapper<CartItemEntity, CartItemDto> cartItemMapper;
 
+    @Autowired
     public CartController(Mapper<CartItemEntity, CartItemDto> cartItemMapper, CartService cartService) {
         this.cartItemMapper = cartItemMapper;
         this.cartService = cartService;

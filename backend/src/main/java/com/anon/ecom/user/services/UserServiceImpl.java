@@ -5,6 +5,7 @@ import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.user.exceptions.UserNotAuthenticatedException;
 import com.anon.ecom.user.exceptions.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -43,6 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity partialUpdate(Long id, UserDto userDto) {
         return userRepository.findById(id).map(existingUser -> {
+            Optional.ofNullable(userDto.getUsername()).ifPresent(existingUser::setUsername);
             Optional.ofNullable(userDto.getFirstname()).ifPresent(existingUser::setFirstname);
             Optional.ofNullable(userDto.getLastname()).ifPresent(existingUser::setLastname);
             Optional.ofNullable(userDto.getEmail()).ifPresent(existingUser::setEmail);

@@ -31,7 +31,6 @@ import static jakarta.ws.rs.HttpMethod.*;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-@Order(1)
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;

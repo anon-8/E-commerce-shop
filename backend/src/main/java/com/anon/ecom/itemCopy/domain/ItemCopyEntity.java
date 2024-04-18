@@ -4,10 +4,7 @@ import com.anon.ecom.item.domain.ItemEntity;
 import com.anon.ecom.order.domain.OrderEntity;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -18,9 +15,11 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "item_copies")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ItemCopyEntity {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemcopy_id_seq")
     private Long id;
 
@@ -44,5 +43,6 @@ public class ItemCopyEntity {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @ToString.Exclude
     private OrderEntity order;
 }

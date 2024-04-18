@@ -2,6 +2,7 @@ package com.anon.ecom.item.services;
 
 import com.anon.ecom.item.ItemRepository;
 import com.anon.ecom.item.domain.ItemEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import java.util.stream.StreamSupport;
 @Service
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
+
+    @Autowired
     public ItemServiceImpl(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }

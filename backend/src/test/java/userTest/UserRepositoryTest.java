@@ -84,6 +84,7 @@ class UserRepositoryTest {
 
         assertTrue((userOptional).isPresent());
         UserEntity user = userOptional.get();
+
         assertUserDetails(user);
     }
 

@@ -6,6 +6,7 @@ import com.anon.ecom.itemCopy.services.ItemCopyService;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
 import com.anon.ecom.user.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,8 @@ public class ItemCopyController {
     private final ItemCopyService itemCopyService;
     private final UserService userService;
     private final Mapper<ItemCopyEntity, ItemCopyDto> itemCopyMapper;
+
+    @Autowired
     public ItemCopyController(Mapper<ItemCopyEntity, ItemCopyDto> itemCopyMapper, ItemCopyService itemCopyService, UserService userService) {
         this.itemCopyMapper = itemCopyMapper;
         this.itemCopyService = itemCopyService;

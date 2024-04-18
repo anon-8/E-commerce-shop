@@ -5,11 +5,14 @@ import com.anon.ecom.config.Mapper;
 import com.anon.ecom.user.domain.dto.UserDto;
 import com.anon.ecom.user.domain.entity.UserEntity;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 @Component
 public class UserMapperImpl implements Mapper<UserEntity, UserDto> {
 
     private final ModelMapper modelMapper;
+
+    @Autowired
     public UserMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }

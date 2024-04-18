@@ -1,5 +1,6 @@
 package com.anon.ecom.config;
 
+import com.anon.ecom.auth.services.JwtServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +19,6 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-@Order(2)
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtServiceImpl jwtServiceImpl;

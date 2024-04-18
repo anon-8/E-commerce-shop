@@ -13,6 +13,7 @@ import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
 import com.anon.ecom.user.services.UserService;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,14 @@ import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
     private final OrderRepository orderRepository;
     private final CartService cartService;
     private final UserService userService;
     private final ItemCopyService itemCopyService;
     private final Mapper<OrderEntity, OrderDto> orderMapper;
 
+    @Autowired
     public OrderServiceImpl(UserService userService, Mapper<OrderEntity, OrderDto> orderMapper, ItemCopyService itemCopyService, OrderRepository orderRepository, CartService cartService) {
         this.orderRepository = orderRepository;
         this.cartService = cartService;
