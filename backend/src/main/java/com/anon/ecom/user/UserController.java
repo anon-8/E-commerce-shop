@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {
+
     private final UserService userService;
     private final Mapper<UserEntity, UserDto> userMapper;
 

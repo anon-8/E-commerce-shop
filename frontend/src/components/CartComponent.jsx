@@ -34,7 +34,7 @@ class CartComponent extends Component {
             quantity: quantity
         };
 
-        axios.post(`/auth/manipulate-cart`, cartItem )
+        axios.put(`/auth/manipulate-cart`, cartItem )
             .then(response => {
                 console.log('Quantity updated:', response.data);
                 this.fetchCartItems();
@@ -45,7 +45,7 @@ class CartComponent extends Component {
     }
 
     placeOrderFromCart = () => {
-        axios.get('/auth/place-order-from-cart')
+        axios.post('/auth/place-order-from-cart')
             .then(response => {
                 console.log('Response data:', response.data);
                 window.open(response.data.paymentUrl, '_blank');

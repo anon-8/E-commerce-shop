@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ItemRepository extends JpaRepository<ItemEntity, Long>,
-        PagingAndSortingRepository<ItemEntity, Long> {
+public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
 }

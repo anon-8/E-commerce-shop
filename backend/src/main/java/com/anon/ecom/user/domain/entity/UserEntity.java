@@ -1,6 +1,5 @@
 package com.anon.ecom.user.domain.entity;
 
-import com.anon.ecom.user.domain.entity.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -11,12 +10,12 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "users")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserEntity implements UserDetails {
 
     @Id

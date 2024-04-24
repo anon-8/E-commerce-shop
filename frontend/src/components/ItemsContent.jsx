@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { setAuthHeader } from '../axios_helper';
+
 class ItemsContent extends Component {
     constructor(props) {
         super(props);
@@ -10,6 +11,8 @@ class ItemsContent extends Component {
             loading: true,
             showSellOffers: {},
             quantities: {},
+            currentPage: 0,
+            totalPages: 1,
         };
     }
 
@@ -17,17 +20,29 @@ class ItemsContent extends Component {
         this.fetchData();
     }
 
-    fetchData() {
-        axios.get('/items')
+    fetchData = () => {
+        const { currentPage } = this.state;
+        axios.get(`/items?page=${currentPage}&size=10`)
             .then(response => {
-                this.setState({ data: response.data, loading: false });
+                this.setState({
+                    data: response.data.content,
+                    loading: false,
+                    currentPage: response.data.number,
+                    totalPages: response.data.totalPages,
+                    error: null
+                });
             })
             .catch(error => {
                 if (error.response && error.response.status === 401) {
-                    setAuthHeader(null);
                 }
                 this.setState({ error: error.message, loading: false });
             });
+    }
+
+    handlePageChange = (pageNumber) => {
+        this.setState({ currentPage: pageNumber, loading: true }, () => {
+            this.fetchData();
+        });
     }
 
     fetchSellOffers = (itemId) => {
@@ -53,7 +68,7 @@ class ItemsContent extends Component {
             quantity: quantity
         };
 
-        axios.post('/auth/manipulate-cart', cartItem)
+        axios.put('/auth/manipulate-cart', cartItem)
             .then(response => {
                 console.log('Item added to cart:', response.data);
             })
@@ -72,7 +87,7 @@ class ItemsContent extends Component {
     }
 
     render() {
-        const { data, loading, error, showSellOffers, quantities } = this.state;
+        const { data, loading, error, showSellOffers, quantities, currentPage, totalPages } = this.state;
 
         return (
             <div className="container">
@@ -87,69 +102,74 @@ class ItemsContent extends Component {
                     ) : error ? (
                         <p>Error: {error}</p>
                     ) : (
-                        <ul className="item-list">
-                            {data.map((item, index) => (
-                                <li key={item.id} className={`item-container ${index % 2 === 0 ? 'even' : 'odd'}`}>
-                                    <div className="item-content">
-                                        <div className="item-image-container">
-                                            <img src={item.imageUrl} alt={item.title} className="item-image"/>
-                                        </div>
-                                        <div className="item-details">
-                                            <div className="description">
-                                                <h3>{item.title}</h3>
-                                                <p>Developer: {item.developer}</p>
-                                                <p>Release Year: {item.releaseYear}</p>
-                                                <p>Platform: {item.platform}</p>
-                                                <p>Tags: {item.tags.join(', ')}</p>
-                                                <button className="btn btn-primary"
-                                                        onClick={() => this.fetchSellOffers(item.id)}>Show Sell Offers
-                                                </button>
+                        <>
+                            <ul className="item-list">
+                                {data.map((item, index) => (
+                                    <li key={item.id} className={`item-container ${index % 2 === 0 ? 'even' : 'odd'}`}>
+                                        <div className="item-content">
+                                            <div className="item-image-container">
+                                                <img src={item.imageUrl} alt={item.title} className="item-image"/>
                                             </div>
-                                            {showSellOffers[item.id] && (
-                                                <div className="sell-offers">
-                                                    <h6>Sell Offers:</h6>
-                                                    <ul className="sell-offers-list">
-                                                        {showSellOffers[item.id].map(offer => {
-                                                            const quantity = quantities[offer.id] || 0;
-                                                            const decrementQuantity = () => this.handleQuantityChange(offer.id, Math.max(0, quantity - 1));
-                                                            const incrementQuantity = () => this.handleQuantityChange(offer.id, Math.min(offer.quantity, quantity + 1));
-
-                                                            return (
-                                                                <li key={offer.id} className="sell-offer">
-                                                                    <div className="seller-info">
-                                                                        Seller: {offer.seller.username}, Price:
-                                                                        PLN{offer.price}
-                                                                        <button className="btn btn-decrement"
-                                                                                onClick={decrementQuantity}>-
-                                                                        </button>
-                                                                        <input type="text" value={quantity} readOnly
-                                                                               style={{
-                                                                                   width: '30px',
-                                                                                   margin: '0 5px'
-                                                                               }}/>
-                                                                        <button className="btn btn-increment"
-                                                                                onClick={incrementQuantity}>+
-                                                                        </button>
-                                                                        <button className="btn btn-success"
-                                                                                style={{margin: '0 6px'}}
-                                                                                onClick={() => this.addToCart(offer.item, offer.seller, offer.price, quantity)}>Add
-                                                                            to Cart
-                                                                        </button>
-                                                                    </div>
-                                                                </li>
-                                                            );
-                                                        })}
-                                                    </ul>
+                                            <div className="item-details">
+                                                <div className="description">
+                                                    <h3>{item.title}</h3>
+                                                    <p>Developer: {item.developer}</p>
+                                                    <p>Release Year: {item.releaseYear}</p>
+                                                    <p>Platform: {item.platform}</p>
+                                                    <p>Tags: {item.tags.join(', ')}</p>
+                                                    <button className="btn btn-primary"
+                                                            onClick={() => this.fetchSellOffers(item.id)}>Show Sell Offers
+                                                    </button>
                                                 </div>
-                                            )}
+                                                {showSellOffers[item.id] && (
+                                                    <div className="sell-offers">
+                                                        <h6>Sell Offers:</h6>
+                                                        <ul className="sell-offers-list">
+                                                            {showSellOffers[item.id].map(offer => {
+                                                                const quantity = quantities[offer.id] || 0;
+                                                                const decrementQuantity = () => this.handleQuantityChange(offer.id, Math.max(0, quantity - 1));
+                                                                const incrementQuantity = () => this.handleQuantityChange(offer.id, Math.min(offer.quantity, quantity + 1));
 
+                                                                return (
+                                                                    <li key={offer.id} className="sell-offer">
+                                                                        <div className="seller-info">
+                                                                            Seller: {offer.seller.username}, Price:
+                                                                            PLN{offer.price}
+                                                                            <button className="btn btn-decrement"
+                                                                                    onClick={decrementQuantity}>-
+                                                                            </button>
+                                                                            <input type="text" value={quantity} readOnly
+                                                                                   style={{
+                                                                                       width: '30px',
+                                                                                       margin: '0 5px'
+                                                                                   }}/>
+                                                                            <button className="btn btn-increment"
+                                                                                    onClick={incrementQuantity}>+
+                                                                            </button>
+                                                                            <button className="btn btn-success"
+                                                                                    style={{margin: '0 6px'}}
+                                                                                    onClick={() => this.addToCart(offer.item, offer.seller, offer.price, quantity)}>Add
+                                                                                to Cart
+                                                                            </button>
+                                                                        </div>
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </div>
+                                                )}
+
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                            ))}
-
-                        </ul>
-
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className="pagination">
+                                {Array.from({ length: totalPages }, (_, i) => (
+                                    <button key={i} className={`btn ${currentPage === i ? 'btn-primary' : 'btn-primary'}`} onClick={() => this.handlePageChange(i)}>{i + 1}</button>
+                                ))}
+                            </div>
+                        </>
                     )}
                 </div>
             </div>

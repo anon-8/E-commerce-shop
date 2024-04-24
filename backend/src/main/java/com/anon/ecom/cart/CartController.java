@@ -27,7 +27,8 @@ public class CartController {
         this.cartItemMapper = cartItemMapper;
         this.cartService = cartService;
     }
-    @PostMapping(path = "/manipulate-cart")
+
+    @PutMapping(path = "/manipulate-cart")
     public ResponseEntity<CartItemDto> addItemToCart(@RequestBody CartItemDto cartItemDto) {
 
         CartItemEntity cartItemEntity = cartItemMapper.mapFrom(cartService.cartManipulation(cartItemDto));
@@ -35,7 +36,6 @@ public class CartController {
 
         return new ResponseEntity<>(cartItemMapper.mapTo(savedCartItemEntity), HttpStatus.CREATED);
     }
-
 
     @GetMapping(path = "/in-cart")
     public List<CartItemDto> listCartItems(){

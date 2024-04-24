@@ -4,7 +4,6 @@ import jakarta.ws.rs.core.HttpHeaders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -43,6 +42,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
                 HttpMethod.OPTIONS.name()));
         configuration.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,

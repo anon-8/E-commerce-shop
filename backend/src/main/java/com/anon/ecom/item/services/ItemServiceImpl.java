@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,16 +32,14 @@ public class ItemServiceImpl implements ItemService {
     }
     @Override
     public List<ItemEntity> findAll() {
-        return StreamSupport
-                .stream(
-                        itemRepository.findAll().spliterator(),
-                        false)
-                .collect(Collectors.toList());
+        return new ArrayList<>(itemRepository.findAll());
     }
+
     @Override
     public Page<ItemEntity> findAll(Pageable pageable) {
         return itemRepository.findAll(pageable);
     }
+
     @Override
     public Optional<ItemEntity> findOne(Long id) {
         return itemRepository.findById(id);

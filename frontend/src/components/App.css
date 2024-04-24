@@ -132,14 +132,51 @@
   margin-bottom: 5px;
 }
 
-.quantity-control {
-  margin-bottom: 5px;
+.btn {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
 }
 
-/* Additional styling as needed */
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
 
+.btn-primary:hover {
+  background-color: #0056b3;
+}
 
+.pagination {
+  margin-top: 20px;
+}
 
+.pagination button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination button.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination button.btn-primary:hover {
+  background-color: #0056b3;
+}
 
 
 /*Cart*/

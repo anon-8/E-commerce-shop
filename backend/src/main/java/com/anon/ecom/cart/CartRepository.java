@@ -13,6 +13,7 @@ import java.util.List;
 
 @Repository
 public interface CartRepository extends CrudRepository<CartItemEntity, Long> {
+
     boolean existsByItemIdAndUserIdAndSellerIdAndPrice(Long itemId, Long userId, Long sellerId, BigDecimal price);
 
     CartItemEntity findByItemIdAndUserIdAndSellerIdAndPrice(Long itemId, Long userId, Long sellerId, BigDecimal price);

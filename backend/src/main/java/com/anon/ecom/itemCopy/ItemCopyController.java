@@ -28,7 +28,7 @@ public class ItemCopyController {
         this.itemCopyService = itemCopyService;
         this.userService = userService;
     }
-    @PostMapping(path = "/put-digital-key-for-sale")
+    @PostMapping(path = "/list-copy-key")
     public ResponseEntity<ItemCopyDto> putItemCopyForSale(@RequestBody ItemCopyDto itemCopyDto) {
 
         ItemCopyEntity savedItemCopyEntity = itemCopyService.putItemCopyForSale(itemCopyDto);

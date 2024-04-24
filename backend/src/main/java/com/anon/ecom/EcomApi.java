@@ -29,41 +29,28 @@ public class EcomApi {
     @Bean
     public CommandLineRunner commandLineRunner() {
         return args -> {
-            if (authService.existsByUsername("admin")) {
-                RegisterRequest adminRequest = RegisterRequest.builder()
-                        .username("admin")
-                        .firstname("Admin")
-                        .lastname("Admin")
-                        .email("admin@mail.com")
-                        .password("password")
-                        .role(Role.ADMIN)
-                        .build();
-                System.out.println("Admin token: " + authService.register(adminRequest).getToken());
-            } else {
-                AuthRequest adminReq = AuthRequest.builder()
-                        .username("admin")
-                        .password("password")
-                        .build();
-                System.out.println("Admin token: " + authService.authenticate(adminReq).getToken());
-            }
-
-            if (authService.existsByUsername("manager")) {
-                RegisterRequest managerRequest = RegisterRequest.builder()
-                        .username("manager")
-                        .firstname("Manager")
-                        .lastname("Manager")
-                        .email("manager@mail.com")
-                        .password("password")
-                        .role(Role.MANAGER)
-                        .build();
-                System.out.println("Manager token: " + authService.register(managerRequest).getToken());
-            } else {
-                AuthRequest managerReq = AuthRequest.builder()
-                        .username("manager")
-                        .password("password")
-                        .build();
-                System.out.println("Manager token: " + authService.authenticate(managerReq).getToken());
-            }
+            registerOrAuthenticate("admin", "Admin", "Admin", "admin@mail.com", "password", Role.ADMIN);
+            registerOrAuthenticate("manager", "Manager", "Manager", "manager@mail.com", "password", Role.MANAGER);
         };
+    }
+
+    private void registerOrAuthenticate(String username, String firstname, String lastname, String email, String password, Role role) {
+        if (authService.existsByUsername(username)) {
+            RegisterRequest request = RegisterRequest.builder()
+                    .username(username)
+                    .firstname(firstname)
+                    .lastname(lastname)
+                    .email(email)
+                    .password(password)
+                    .role(role)
+                    .build();
+            log.info(role.name() + " token: " + authService.register(request).getToken());
+        } else {
+            AuthRequest request = AuthRequest.builder()
+                    .username(username)
+                    .password(password)
+                    .build();
+            log.info(role.name() + " token: " + authService.authenticate(request).getToken());
+        }
     }
 }

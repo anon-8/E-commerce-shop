@@ -10,6 +10,8 @@ import com.anon.ecom.user.domain.entity.UserEntity;
 import com.anon.ecom.config.Mapper;
 import com.anon.ecom.itemCopy.ItemCopyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +55,7 @@ public class ItemController {
             return new ResponseEntity(savedUpdatedItemDto, HttpStatus.CREATED);
         }
     }
+
     @PatchMapping(path = "/auth/management/items/{id}")
     public ResponseEntity<ItemDto> partialUpdateItem(
             @PathVariable("id") Long id,
@@ -67,13 +70,13 @@ public class ItemController {
                 itemMapper.mapTo(updatedItemEntity),
                 HttpStatus.OK);
     }
+
     @GetMapping(path = "/items")
-    public List<ItemDto> listItems() {
-        List<ItemEntity> items = itemService.findAll();
-        return items.stream()
-                .map(itemMapper::mapTo)
-                .collect(Collectors.toList());
+    public Page<ItemDto> listItems(Pageable pageable) {
+        return itemService.findAll(pageable)
+                .map(itemMapper::mapTo);
     }
+
     @GetMapping(path = "/item/{id}")
     public ResponseEntity<ItemDto> getItem(@PathVariable("id") Long id) {
         Optional<ItemEntity> foundItem = itemService.findOne(id);
@@ -97,8 +100,7 @@ public class ItemController {
         List<SellOffersDto> sellOffersDtoList = sellOffers.stream()
                 .filter(itemCopy -> {
                     String offerKey = itemCopy.getSeller().getId() + "-" + itemCopy.getPrice();
-                    boolean isNewOffer = uniqueOfferKeys.add(offerKey);
-                    return isNewOffer;
+                    return uniqueOfferKeys.add(offerKey);
                 })
                 .map(itemCopy -> {
                     SellOffersDto sellOffersDto = new SellOffersDto();
