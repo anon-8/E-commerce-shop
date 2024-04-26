@@ -22,7 +22,7 @@ class ItemsContent extends Component {
 
     fetchData = () => {
         const { currentPage } = this.state;
-        axios.get(`/items?page=${currentPage}&size=10`)
+        axios.get(`/items?page=${currentPage}&size=5`)
             .then(response => {
                 this.setState({
                     data: response.data.content,
@@ -166,7 +166,7 @@ class ItemsContent extends Component {
                             </ul>
                             <div className="pagination">
                                 {Array.from({ length: totalPages }, (_, i) => (
-                                    <button key={i} className={`btn ${currentPage === i ? 'btn-primary' : 'btn-primary'}`} onClick={() => this.handlePageChange(i)}>{i + 1}</button>
+                                    <button key={i} className={`btn ${currentPage === i ? 'btn-primary' : 'btn-secondary'}`} onClick={() => this.handlePageChange(i)}>{i + 1}</button>
                                 ))}
                             </div>
                         </>
