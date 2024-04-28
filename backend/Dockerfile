@@ -1,11 +1,9 @@
-FROM openjdk:21
+FROM openjdk:21-jdk
 
-RUN mkdir /backend
+RUN groupadd -r app && useradd -r -g app app
 
-WORKDIR /backend
+USER app
 
-COPY target/backend-0.0.2-SNAPSHOT.jar spring-boot-app.jar
+COPY target/*.jar app.jar
 
-EXPOSE 8080
-
-CMD ["java", "-jar", "spring-boot-app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
