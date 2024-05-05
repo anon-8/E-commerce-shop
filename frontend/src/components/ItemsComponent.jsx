@@ -68,8 +68,8 @@ class ItemsContent extends Component {
                         <div>
                             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-9">
                                 {data.map((item, index) => (
-                                    <li key={item.id} onClick={() => this.handleItemClick(item)} style={{ cursor: 'pointer', minWidth: '450px' }}>
-                                        <div className="bg-gray-100">
+                                    <li key={item.id} onClick={() => this.handleItemClick(item)} style={{ cursor: 'pointer', minWidth: '450px'}}>
+                                        <div className="opacity-90 bg-gray-100 border-1 hover:border-gray-500 hover:opacity-100">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex">
                                                     <img src={item.imageUrl} alt={item.title} className="w-40 h-56 object-cover mr-4"/>
@@ -84,9 +84,16 @@ class ItemsContent extends Component {
                                 ))}
                             </ul>
                             <div className="flex justify-center mt-8">
-                                {Array.from({ length: totalPages }, (_, i) => (
-                                    <button key={i} className={`btn ${currentPage === i ? 'btn-primary' : 'btn-secondary'}`} onClick={() => this.handlePageChange(i)}>{i + 1}</button>
-                                ))}
+                                <button className="btn btn-primary mr-4" onClick={() => this.handlePageChange(currentPage - 1)} disabled={currentPage === 0}>
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                                <button className="btn btn-primary" onClick={() => this.handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1}>
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     )}
