@@ -2,7 +2,7 @@ import React from "react";
 import WelcomeContent from "./WelcomeContent";
 import LoginForm from "../forms/LoginForm";
 import { request, setAuthHeader } from "../axios_helper";
-import ItemsContent from "./ItemsContent";
+import ItemsComponent from "./ItemsComponent";
 import CartComponent from "./CartComponent";
 import Navbar from "./Navbar";
 import logo from "../logo.svg";
@@ -79,13 +79,16 @@ export default class AppContent extends React.Component {
                     home={this.home}
                 />
 
-                {componentToShow === "welcome" && <WelcomeContent />}
-                {componentToShow === "items" && <ItemsContent />}
-                {componentToShow === "cart" && <CartComponent />}
+                {componentToShow === "welcome" && <WelcomeContent/>}
+                {componentToShow === "items" && <ItemsComponent/>}
+                {componentToShow === "cart" && <CartComponent/>}
                 {componentToShow === "login" && (
-                    <LoginForm onLogin={this.onLogin} onRegister={this.onRegister} />
+                    <LoginForm onLogin={this.onLogin} onRegister={this.onRegister}/>
                 )}
+
+
             </div>
+
         );
     }
 }
