@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ListKeyForm from '../forms/ListKeyForm'; // Import the ListKeyForm component
 
 const Item = ({ item }) => {
     const [sellOffers, setSellOffers] = useState([]);
     const [quantities, setQuantities] = useState({});
     const [error, setError] = useState(null);
+    const [showListKeyForm, setShowListKeyForm] = useState(false); // Add state for toggling the form visibility
 
     useEffect(() => {
         fetchSellOffers(item.id);
@@ -43,8 +45,13 @@ const Item = ({ item }) => {
         setQuantities({ ...quantities, [offerId]: quantity });
     }
 
+    const toggleListKeyForm = () => {
+        setShowListKeyForm(prevState => !prevState);
+    };
+
     return (
         <div className="bg-gray-100 rounded-md p-5">
+            {showListKeyForm && <ListKeyForm />} {/* Render ListKeyForm if showListKeyForm is true */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <img src={item.imageUrl} alt={item.title} className="w-57 h-80 object-cover rounded-md mr-4"/>
@@ -81,6 +88,11 @@ const Item = ({ item }) => {
                 ) : (
                     <p>No sell offers available.</p>
                 )}
+            </div>
+            <div className="flex justify-center mt-4">
+                <button className="btn btn-primary" onClick={toggleListKeyForm}>
+                    {showListKeyForm ? 'Hide Form' : 'Show Form'}
+                </button>
             </div>
             {error && <p className="text-red-500">{error}</p>}
         </div>
