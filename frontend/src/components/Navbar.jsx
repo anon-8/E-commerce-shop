@@ -3,7 +3,7 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const Navbar = (props) => {
-    const { isLoggedIn, login, cart, logout, home, about, contact } = props;
+    const { isLoggedIn, login, cart, logoSrc, logout, home, about, contact } = props;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 const navigation = [
@@ -16,11 +16,10 @@ const navigation = [
         <header className="position-relative absolute inset-x-0 top-0 z-50">
             <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1">
-                    <a href="#" className="-m-1.5 p-1.5">
-                        <span className="sr-only">Your Company</span>
+                    <a onClick={home} type="button" className="-m-1.5 p-1.5">
                         <img
-                            className="h-8 w-auto"
-                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                            className="h-12 w-auto "
+                            src={logoSrc}
                             alt=""
                         />
                     </a>
@@ -40,21 +39,21 @@ const navigation = [
                         <a key={item.name}
                            type="button"
                            onClick={item.onClick}
-                           className="text-sm font-semibold leading-6 text-gray-900">
+                           className="text-lg font-semibold leading-6 text-gray-900 hover:text-gray-500">
                             {item.name}
                         </a>
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                     {isLoggedIn && (
-                            <a type="button" className="text-sm font-semibold leading-6 text-gray-900 mr-6"
+                            <a type="button" className="text-lg font-semibold leading-6 text-gray-900 mr-6 hover:text-gray-500"
                                onClick={cart}>Cart</a>
                     )}
                         {!isLoggedIn ? (
-                            <a type="button" className="text-sm font-semibold leading-6 text-gray-900"
+                            <a type="button" className="text-lg font-semibold leading-6 text-gray-900 hover:text-gray-500"
                                onClick={login}>Sign In <span aria-hidden="true">&rarr;</span> </a>
                         ) : (
-                            <a type="button" className="text-sm font-semibold leading-6 text-gray-900"
+                            <a type="button" className="text-lg font-semibold leading-6 text-gray-900 hover:text-gray-500"
                                onClick={logout}>Logout</a>
                         )}
                 </div>

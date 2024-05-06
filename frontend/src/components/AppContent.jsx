@@ -5,7 +5,7 @@ import { request, setAuthHeader } from "../axios_helper";
 import ItemsComponent from "./ItemsComponent";
 import CartComponent from "./CartComponent";
 import Navbar from "./Navbar";
-import logo from "../logo.svg";
+import logo from "../keychain.svg";
 
 export default class AppContent extends React.Component {
     constructor(props) {
@@ -62,7 +62,7 @@ export default class AppContent extends React.Component {
     };
 
     home = () => {
-        this.setState({ componentToShow: "items" });
+        this.setState({ componentToShow: "items", selectedItem: null });
     };
 
     render() {

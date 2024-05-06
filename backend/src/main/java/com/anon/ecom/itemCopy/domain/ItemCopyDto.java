@@ -14,14 +14,5 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class ItemCopyDto {
-    private Long id;
-
-    private UserDto seller;
-
-    private ItemDto item;
-
-    private String copy_key;
-
-    private BigDecimal price;
-
+  
 }
