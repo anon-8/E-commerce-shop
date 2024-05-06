@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import axios from 'axios';
 
 class ListKeyForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            copy_key: "",
-            price: ""
-        };
     }
 
     onChangeHandler = (event) => {
         let name = event.target.name;
         let value = event.target.value;
-        this.setState({[name]: value});
+        this.listCopyKey(value);
     };
 
-    onSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('/list-copy-key', this.state);
-            console.log("Response:", response.data);
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    };
+    listCopyKey = (price, copyKey) => {
+        const itemCopy = {
+            price: price,
+            copyKey: copyKey
+        };
+
+        axios.put('/auth/list-copy-key', itemCopy)
+            .then(response => {
+                console.log('Item added to cart:', response.data);
+            })
+            .catch(error => {
+                console.error('Error adding item to cart:', error);
+            });
+    }
 
     render() {
         return (
